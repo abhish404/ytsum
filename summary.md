@@ -1,49 +1,41 @@
 ## TL;DR
-Coding skills are becoming increasingly less valuable as AI takes over, with Replit CEO stating that knowing how to code may be a disadvantage in the future. Developers can now create complex systems and products rapidly with the help of AI-powered tools, making manual coding less necessary. This shift has led to layoffs and a loss of enjoyment for coding, highlighting the need to adapt to the changing landscape where humans and machines interact more closely.
+In the year 2026, having coding knowledge may become a disadvantage due to the rapid development of AI agents that can accomplish tasks with just a single line of code. As a result, companies are adopting ready-made AI templates and templates provided by OSS, combining them with tools like Claude Code to speed up product development. The only way forward for developers is to learn to manage and control chaos by embracing emerging AI technologies.
 
 ## Summary
 
-### AI Coding Reality Check [0:00]
+### The Dark Ages of Slop Overflow [0:00]
 
-1. 2026 dev experience: 1 line → dozen agents arguing
-2. handcrafted code → instant AI slop
-3. coding no longer fun, layoffs rising
-4. Replit CEO: coding skill now a disadvantage
-5. future = enslave the machines, not nostalgia
+1. 2026 dev reality: one line of code → dozen AI agents arguing
+2. Craft enjoyment is dead; code now hallucinated in bulk
+3. Layoffs intensify; coding knowledge becomes disadvantage
+4. Only way forward: embrace chaos & enslave the machines
 
-> ⭐ “Knowing how to code is becoming a disadvantage.”
+> ⭐ Knowing how to code is turning into a liability.
 
-### Agent Hiring Toolkit [1:19]
+### Hiring Agent Templates [1:18]
 
-1. Agency: OSS agent templates for every startup role
-2. combine agents in Claude Code → zero-to-product fast
-3. Prompt Fu: unit-test prompts & models
-   1. auto red-team vs prompt injection
-   2. 14-year-old Discord test
-4. Mirrorish: multi-agent prediction engine
-   1. scrapes web → digital society sim
-   2. macro/micro trend forecasts
+1. Agency OSS provides ready-made agent templates
+   1. front-end, back-end, security, growth, Twitter engager
+2. Combine agents in Claude Code → zero-to-product fast
+3. Prompt quality matters → Prompt Fu unit-tests prompts
+   1. auto-red-team vs prompt injection
+   2. 14-yr-old on Discord test
 
-### UI & Context Hacks [3:14]
+### Predict & Polish Stack [2:29]
 
-1. Impeccable: 17 commands to fix vibe-coded UIs
-   1. distill → simplify
-   2. colorize → brand colors
-   3. animate & delight → uniqueness
-2. Open Viking: FS-based agent memory DB
-   1. tiers cut token costs
-   2. auto-compresses long-term memory
+1. Mirrorish multi-agent prediction engine
+   1. scrapes web data → miniature social network sim
+   2. macro/micro trend analysis for billion-dollar ideas
+2. Impeccable fixes vibe-coded purple UIs
+   1. 17 commands: distill, colorize, animate, delight
+   2. simplify complex chatbot interfaces
 
-### Unfiltered & DIY Models [4:21]
+### Context & Memory Control [3:49]
 
-1. Heretic: removes model guardrails via “obliteration”
-   1. run on Gemma → uncensored obey-anything model
-2. Nano Chat: full LLM pipeline OSS
-   1. $100 GPU → own small model
-   2. tokenize, pre-train, fine-tune, eval, web UI
-
-### Sponsor: Skip Meetings [5:25]
-
-1. Recall AI: one API for Zoom/Meet/Teams recording
-2. transcripts + metadata in real time
-3. HubSpot & ClickUp ship in hours not months
+1. Open Viking FS-based agent memory DB
+   1. tiered loading → lower token cost
+   2. auto-compress & refine long-term memory
+2. Heretic removes model guardrails via obliteration
+   1. uncensored Gemma in one CLI call
+3. Nano Chat trains $100 custom SLM from scratch
+   1. full pipeline: tokenize, pre-train, fine-tune, UI
