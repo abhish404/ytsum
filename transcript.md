@@ -1,1 +1,199 @@
-If you want to be a successful entrepreneur, you just have to do the unsexy manual work and get it done. [music] One of my mentors once said, "The road to hell is paved with premature optimization." Sometimes it's just solving problems that no one else really wants to solve. I've assembled a roster in my head of the allstars that I've worked with across my 10 year career now, 11 year, I guess. And to have the resources to go get these people and bring them onto the team and assemble the Avengers is I'm in the current I think peak of my career far. much fun. Get to go speak at UAB. Hi, my name is [music] Elliot. Very good to meet you all. Thank you much for having me. At a startup, everything is higher stakes and you are you are closer to the customer. You are closer to you care about every dollar more than you do at a bigger, more traditional company. I'm just going to tell you my story and I prefer two-sided conversations more than a one-way one. , I want to leave time for questions, whatever you guys are curious about. I am from Birmingham. I was born here. I went to Lee University. Lee University is a small private Christian liberal arts school in Tennessee. And I studied music. I was going to be a producer. That was my ambition. My best friend from Mountain Brook, this guy Charlie, calls me and he's , "Hey, I saw a Craigslist ad for this delivery job. I went in and interviewed and I and I got a job in the office. It's this startup called Shipped. , the startup is starting. The CEO is a prodigy entrepreneur. He dropped out of high school at 16, [music] sold his first business at 18, sold his second business at 21. His name's Bill. I think you'd him. You should interview here. And I was , , that could be my summer job before I moved to Nashville. , I interview at Shipped. Mind you, there are four people employed at this company. And they called me back the next day and Bill said, you did not get the job. And I was , wow. And he was joking. He was , "You didn't get the customer service job, but we want to create a position for you called head of city launch." [music] And I was , "Sweet. What does that mean?" I personally was responsible for the team that expanded to 63 cities in [music] 2 years. I was on the road a lot. But it was a ton of fun. As you can imagine, that is one of the through lines of startups. Regardless of what industry you're in or what sector, what market you're in, if you want to be a successful entrepreneur, you just [music] have to do the unsexy manual work and get it done. It's very tempting, especially now in the age of vibe coding and AI, to try to automate things prematurely. [music] One of my mentors once said, "The road to hell is paved with premature optimization." Being an entrepreneur is about doing what other people are not willing to do. And that doesn't necessarily mean building the best pitch deck or [music] pitching the biggest investors. Sometimes it's just solving problems that no one else really wants to solve. And I fell totally in love with the idea of leveraging myself and my team with software to do way more than we could without it. , I [music] had already fallen in love with startups. I had already said we'll do the music thing later. This is too much [music] fun. And then when I discovered software engineering, it was game over. Shipped was an incredible [music] ride. We sold to Target for 550 million in 2 and 1/2 years. And as an early employee, we had stock options. [music] I took some of the money that we made when we sold and started link. And I'll tell you [music] about that before I get into link and where we are now. Does anybody have questions? Yes. Do you think it's necessary for entrepreneurs to learn how to code yourself? I don't think anything is necessary to be an entrepreneur. , the definition of entrepreneur is very broad. There are totally non-technical entrepreneurs. You can have a service-based business and be an entrepreneur. And , if you want to be if you want to start a tech company, learning the fundamentals or the first principles, I think, is pretty important. Whether or not you become competent enough to go start and build your own app from scratch is not necessarily what I'm saying, but enough to say to have a sense of this person knows what they're talking about and is good and this person is not [music] enough to hone your own judgment, I'd say. , it's 2019. My co-founders and I, we were bored at Shift and we had this side hustle called Sidekick. And Sidekick was, have you ever used sneaker buying bots? Is that [music] still a thing? Limited edition sneakers. They got use a bot to buy them. We had an Instagram growth bot called Sidekick. And we would sell it to small businesses. Me and [music] my actual two co-founders worked on this before Link. And this is 2019, right when Apple released the ability to scan a QR code with a native camera. They used to have to download an app to scan QR codes and it was no one did it. And we were , what if we put the checkout link and a little contact exchange [music] in this, , behind this QR code and we could just point people to that and they could buy it, get our info, [music] all at the same time. And what happened was people at shipped, our co-workers, and then our friends, then family, then people we didn't know [music] kept being , "Hey, how do I get a digital business card? I want one of those digital business cards." And it was just this QR code in your Apple wallet. And we were , "Yeah, that yeah, that's what this is, a digital business card. We meant to do this for sure." Pretty [music] scary, right? We had two employees at that point. , there's five of us in a room. We raised a million bucks. , we're sitting on money. Thank God. We'd raised money right before Birmingham closed down. And great, we have a product that people are supposed to use for in-person networking and the whole world shut down, especially inerson networking. And my co-founder had the idea that if we could put [music] the digital QR code onto a physical card, it would be easier for people to adopt, right? right? people were used to paper business cards and we had this digital thing, but if we merged the two and put a QR code and a physical card and oh this NFC technology could be a nice complement to the QR code, , [music] you could tap it to someone's phone and then instead of them having to scan it, that felt cool. and we went on Alibaba. [music] We ordered these black PVC cards with NFC chips, NFC chips in them and our QR codes on them and we [music] got 2,000 of them to our apartment in in Jimson Flats and we put them on Facebook and we started selling physical cards. Believe it or not, it [music] blew up and the whole thing was just we got a little bit of signal of something that people wanted and something that worked and we just we doubled down. That's entrepreneurship in a nutshell. Doubled down. People were , "Hey, I want custom designs printed on these cards." We were , "." And then we sold that for three times the price of the standard card. And started making bank. And then we were , ", what if on the digital side of things, we sold a subscription because subscriptions are the best way to make money to customize the digital aspects of your page, right? And scaling software is infinitely cheaper than scaling physical hardware." And people bought it. And we called it Link Pro. And we sold it for $5 a month. And we were nervous to charge anything, but people bought it. That was 2020 and 2021, , customers kept saying, "Hey, how do I standardize the physical branding of the card, the digital branding of the profiles, and maybe put a an integration or two on the back end that when my team is meeting leads or meeting customers, we could sync all that to our CRM Salesforce or HubSpot." And we heard that enough and we were , we should bundle this up and sell it to businesses and call it link for teams and [music] we did. , a lot of businesses are solutions looking for a problem. A lot of the startup advice is find a problem that no one else is solving. And that's pretty hard to do. You have to have both. You can't be totally problem oriented. , Henry Ford said if I'd asked people what they wanted, they would have said a faster horse. , you can't totally rely on talking to people about the problems and [music] get their advice on how they think you should solve them because most people aren't dreamers and builders and entrepreneurs. But on the other hand, you can't just go build stuff and hope people want it. you can but I think generally having enough agency and creativity to create something some solution and enough wherewithal to know directionally what kinds of problems that thing could solve is a healthy mix. When we started the QR code thing we didn't even we didn't really conceptualized it as a digital business card per se. People started calling it that and we we shifted with where the market was pulling us. That's been our whole story. I was , "All right, if we give sales people a phone number that we controlled, AI powered, but behind the scenes, you made calls to and from that number, we could take notes on the phone call for you, put those notes into your CRM." Where it started was when you met leads through Link's digital business cards, we could text those leads automatically for you. And to the end user, they just it looks your phone number. They don't know that's your work number versus your personal. And we thought about it for a while. We talked about it for a while. I'm in the hospital with my wife. Our second baby has just been born. and my co-founder and CTO calls me and he's , "Hey, we can do this thing for the digital business card or we can we could try this phone thing that we've been talking about." And it was a two-cond decision. I was , "Let's do the phone thing. , go build a prototype." We built it. We launched it. And the people who signed up for that product very creatively called Link Phone used 10 times more than the power user of the digital business card. And they paid us $149 a year instead of $99 a year. We were , "Game on." And then customers started asking for something else. Most of our customers had iPhones. Most of their customers had iPhones. And the way that we built Link Phone, it sent green text. It sent SMS text. [music] And they were , "We want to send blue text." And I was , ", that's too bad. There's no blue text API. Most people build phone technology on top of a company called Twilio. And the only way to send messages is [music] to make them green." And I heard it enough. And I went to lunch with Bill Smith and he was , "I really want to use your AI phone thing." But he's , "I will not send green text." And I was , "I get it. this is a real thing. And I went to the team and I was , look, I don't know how we would do it, but if we could solve and if we could send blue text as part of link phone, that'd be really valuable. And we turned on this product called link blue for our sales team. [music] And what would happen is you'd come to our site, you'd fill out a calendar invitation, and instead of getting green text or emails reminding you about the meeting, you would get a blue text from Hunter or from Mason on our team, and it looked someone just typed a real text to you and said, "Hey, I'm excited to meet with you tomorrow. Are you still good for that time?" The percentage of people who attended our sales demos jumped 50% in a matter of weeks. Remember, we started at 60 a year and then we went to 99 a year and then 149 a year and then we got crazy and we were , "Link Blue, this product is $1,048 [music] a year and it sold hotcakes." We doubled our ARR from the previous four years in 8 [music] months last year when we launched Link Blue. , your willingness to solve problems that other people are not because they're hard or messy [music] or unsexy or complicated is usually directly proportional to the value you create and therefore what people are going to pay you for that solution. And we had this company come through our lead form called the interaction company of California and they were , , backed by some top tier investors and they were , "Hey, we don't have a CRM. We don't care about the sales stuff. [music] Can we plug into your API?" We were , ", maybe under the hood, the API is what powers [music] the sending iMessage from your CRM." And we were going to polish that up a little bit and sell that to this company. And we did sold it to them for the same price we sold, , normal [music] customers. And it went crazy. They built an AI that texted and seemed more human than any other conversational AI before them. And they went [music] super viral. What caught my attention most, we were all of a sudden an infrastructure company. We were expanding and scaling with [music] our customers scale, not with their hiring. And if you can build [music] an infrastructure type of company, if you can be the underbelly of the business that powers the whole [music] thing, it's a really, really valuable business, way better than a SAS sales tool plugin. It's hard to start there. Most companies iterate their way there. But all [music] of a sudden, we found ourselves in a really cool spot. Here's the crux of entrepreneurship in a nutshell. the sales type customers represented [music] of the new revenue 90% of our new revenue. But when we saw Poke [music] come through and one or two other infrastructure customers is what we call them who were building on top of our API. It was much a stickier use case and a higher value proposition to [music] those customers that I was , we're pivoting the whole company and we're going to turn off this thing that's working really, really in order to focus entirely and myopically on the thing that's working has a kernel of a promise of working [music] even better. And we did. Entrepreneurship is just normal life, but the peaks and valleys are super amplified. The lows are really low, the highs are really high. [music] I wouldn't rather be doing anything else. The traits I think a good CEO has to have. Whether or not I have them is up for debate. [music] I think the best CEOs are confident enough to try things and make decisions, but at the same time humble and open-minded enough to be being wrong. [music] , and to understand that you a lot of the decisions you make will be wrong. , you have to be sharp [music] enough. You have to be smart enough to just make decisions and see patterns and see trends. I do think that at a certain point intelligence gets in the way. You don't you don't want to be too smart, but you need to be smart enough to [music] know your way around. You need to be good at communicating and understanding people. You need to have a high EQ. A lot of the things I just mentioned just take practice. I was completely unqualified to be CEO when we started beyond I just had the gumption to go do the thing. And a good CEO my last point has to reinvent themselves. I have been head of sales, head of marketing, head of support, head of filming our ads. I I've done everything in the business and you have to do everything to know what good looks to then go hire yourself out of that job and I constantly have to reinvent what [music] I'm doing for the business at any given time. Thank you for having me. Appreciate you guys. Yeah. [applause] [music] [music]
+0:00 Every developer in 2026 has the same
+0:02 problem. You open your editor, you write
+0:04 one line of code, and suddenly a dozen
+0:06 different AI agents are arguing in your
+0:08 terminal about how to do it better. And
+0:10 if you're one of those weirdos me
+0:11 who enjoys the craft of writing
+0:13 code, congratulations. You're officially
+0:15 living in the dark ages of slop
+0:17 overflow. Instead of grinding for hours
+0:19 and earning those sweet dopamine hits
+0:20 line by line, you now just tell the AI
+0:22 what you want and watch it hallucinate
+0:24 an entire codebase. Writing code isn't
+0:26 fun anymore. Layoffs are intensifying.
+0:28 And even the CEO of Replet said that
+0:30 nowadays knowing how to code is 
+0:32 a disadvantage.
+0:33 Not having a coding experience is
+0:35 becoming an advantage.
+0:37 Building a product is more efficient
+0:38 than ever. Unless you're a stupid
+0:40 programmer who cares about stupid things
+0:41 architecture and security.
+0:43 Coders get lost in the details.
+0:45 But he's absolutely right. The hard
+0:46 truth is that we're not going back to
+0:48 the good old days of handcrafted code.
+0:50 And the only way forward is to embrace
+0:51 the chaos and learn how to enslave the
+0:53 machines. In today's video, we'll look
+0:55 at seven different open- source projects
+0:57 you've never heard of that will help you
+0:59 whip your AI agents into shape and build
+1:01 highly effective slot pipelines. It is
+1:03 March 12th, 2026 and you're watching the
+1:05 code report. In the past, if you were an
+1:07 indie full stack developer, it meant you
+1:09 had to have skills on the front end,
+1:11 backend. You had to understand DevOps,
+1:13 security, UI, UX design, and a bunch of
+1:16 other BS. But nowadays, you don't need
+1:18 to learn all that stuff. You just need
+1:19 to hire the right agent. And a tool that
+1:21 can help you do that quickly is the
+1:23 agency, which is a free and open- source
+1:25 project that provides agent templates
+1:27 for every job role you would
+1:29 find at a startup, a front-end
+1:30 developer, back-end developer, security
+1:32 engineer, a growth hacker, Twitter
+1:34 engager, and many others. You can easily
+1:37 combine all these agents together in
+1:38 claude code, which can more efficiently
+1:40 help you go from zero to an actual
+1:42 product without needing to directly
+1:44 implement every personality and skill.
+1:46 That's cool, but when you put these
+1:47 agents to work, how do your
+1:48 prompts are any good? , that's where
+1:50 Prompt Fu comes in. Another open- source
+1:52 tool that was just recently acquired by
+1:54 OpenAI that you can think of a unit
+1:56 testing framework for your prompts. If
+1:58 you're using AI to build an app that
+2:00 lets the end user interact with AI, also
+2:02 half the battle is figuring out if
+2:04 you're using the best model with the
+2:05 best prompt. But prompt FU lets you test
+2:07 different prompts with different models
+2:09 to optimize what's going to 
+2:11 work best in your application. On top of
+2:12 that, it can also do automated red team
+2:14 attacks to find out if your app is
+2:16 vulnerable to things prompt
+2:18 injection, which is important because if
+2:20 your chatbot can be tricked into
+2:21 revealing your API keys by a 14-year-old
+2:23 on Discord, your app is probably going
+2:25 to fail. The failing sucks, but it's a
+2:27 lot easier to not fail when you can
+2:29 predict the future. And Mirrorish can
+2:31 help you do that. It's a multi- aent AI
+2:33 prediction engine that starts by
+2:35 extracting a bunch of data from the
+2:36 internet, breaking news and
+2:38 financial trends. It then uses that data
+2:40 to create a digital world where multiple
+2:42 agents with independent personalities
+2:44 then react to and discuss the data
+2:46 almost a miniature evolving
+2:48 artificial social network. Yeah, it
+2:50 might be in Chinese, but if you don't
+2:51 know how to speak Chinese yet, all I can
+2:53 say to you is low hola, you're falling
+2:56 behind. for example, if you want an
+2:58 app idea that's guaranteed to make you a
+2:59 billion dollars, you can spin up Micro
+3:01 Fish to analyze trends at the macro and
+3:03 micro level, then predict a strategy
+3:05 that's guaranteed to make you rich. It's
+3:07 really that easy. But here's the
+3:08 problem. You go to build that app and
+3:10 the UI has these dumb purple gradients
+3:12 every single other vibe coded app.
+3:14 , to fix that, you need Impeccable,
+3:15 an open- source project optimized for
+3:18 front-end design. It's a skill that
+3:19 comes with 17 different commands that
+3:21 can help your UI not suck much. ,
+3:23 one thing that drives me crazy is that
+3:25 many AI chatbots create UIs that are way
+3:27 too complex. , with impeccable, we
+3:29 can use the distill command to simplify
+3:32 everything in one go. Then we can use
+3:34 commands colorize to add our brand
+3:35 colors. Then slowly add in commands 
+3:38 animate and delight to make the UI look
+3:40 more unique and special. But perhaps the
+3:42 single most important skill of the
+3:43 modern Vibe engineer is managing
+3:45 context. If the context is garbage, the
+3:47 output is garbage. An open- source
+3:49 project trying to make your context
+3:50 better is Open Viking, a database
+3:53 designed specifically for AI agents.
+3:55 Instead of jamming everything into a
+3:56 vector database, Open Viking organizes
+3:58 an agents memory, resources, and skills
+4:01 into the file system. Not only is that a
+4:03 sane way to unify your context, but it
+4:05 also uses a tiered loading system which
+4:08 can dramatically reduce token
+4:09 consumption and save you a bunch of
+4:11 money. And it automatically compresses
+4:12 content and refineses long-term memory,
+4:14 which will make your agent smarter the
+4:16 more you use it. But depending on your
+4:18 project, you may not need an agent
+4:19 that's more smarter. You may need an
+4:21 agent that's more based. And that's
+4:22 where Heretic comes in. Virtually all
+4:24 models out there have guardrails that
+4:26 prevent you from doing fun things 
+4:28 cooking method in your shed or building
+4:30 high yield thermonuclear warheads.
+4:32 Heretic allows you to remove this
+4:34 draconian woke censorship using a
+4:36 technique called obliteration. This
+4:38 approach allows the tool to be
+4:39 completely automatic and doesn't require
+4:41 any expensive post training. All you
+4:43 have to do is take a smart yet highly
+4:45 censored model Google's Gemma, run
+4:47 this tool from the command line, and now
+4:48 you have a model without the bubble wrap
+4:50 that will obey any command. But maybe
+4:52 that's not even enough to satisfy your
+4:53 unhinged ambitions. In that case, you
+4:56 may want to just build your own LLM from
+4:57 scratch. And believe it or not, you can
+4:59 do that with Nano Chat, which
+5:01 implements the entire LLM pipeline,
+5:04 including tokenization, pre-training,
+5:06 fine-tuning for chat, evaluation, and a
+5:08 web UI, you can talk to it.
+5:10 What's crazy though is that you can use
+5:11 it to train your own small language
+5:13 model for about $100 in GPU time. It's
+5:16 not going to be Claw, GPT5, or Gemini,
+5:18 but at least it gives you a model that
+5:20 you have absolute control over. But the
+5:22 only thing that's a bigger waste of time
+5:23 than writing code by hand is going to
+5:25 meetings. And that's why you need to
+5:26 know about Recall AI, the sponsor of
+5:28 today's video. If you've ever tried
+5:30 building AI meeting tools from scratch,
+5:32 it's a nightmare trying to
+5:34 maintain separate integrations for Zoom,
+5:36 Google Meet, Microsoft Teams, and all
+5:38 the others. Recall solves this problem
+5:40 by giving you one unified API that works
+5:43 across every meeting platform. You can
+5:45 set up a meeting bot or desktop
+5:46 recording with a few lines of code 
+5:48 I'm doing here and it'll capture
+5:50 transcripts, recordings, and metadata in
+5:52 real time. The thousands of companies
+5:54 HubSpot and ClickUp use it to
+5:56 handle all their meeting infrastructure.
+5:58 And most teams are able to ship
+6:00 recording and note-taking features to
+6:01 production in a few hours instead of
+6:03 months. Check out recall.ai/fireship
+6:06 to get $100 in free credits to try it
+6:09 out for yourself. This has been the Code
+6:10 Report. Thanks for watching and I will
+6:12 see you in the next one.

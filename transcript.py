@@ -37,6 +37,16 @@ def get_chapters(url: str) -> list[dict]:
         return info.get("chapters") or []
 
 
+def format_timestamp(seconds: float) -> str:
+    """Convert seconds to M:SS or H:MM:SS format."""
+    total = int(seconds)
+    h, remainder = divmod(total, 3600)
+    m, s = divmod(remainder, 60)
+    if h:
+        return f"{h}:{m:02d}:{s:02d}"
+    return f"{m}:{s:02d}"
+
+
 def clean_text(text: str) -> str:
     return " ".join(text.replace(">>", "").split())
 
@@ -53,9 +63,38 @@ def build_markdown(url: str) -> str:
 
     print("⏳ Fetching transcript...")
     ytt = YouTubeTranscriptApi()
-    transcript = list(ytt.fetch(video_id))
+
+    # Auto-detect available transcript language (supports any language)
+    transcript_list = ytt.list(video_id)
+    available = list(transcript_list)
+    if not available:
+        print("❌ No transcripts available for this video.")
+        sys.exit(1)
+
+    chosen = available[0]
+    print(f"🌐 Found transcript: {chosen.language} ({chosen.language_code})")
+    transcript = list(chosen.fetch())
 
     lines = []
+
+    def grouped_lines(entries: list, interval: float = 8.0) -> list[str]:
+        """Group transcript entries into ~interval-second chunks."""
+        if not entries:
+            return []
+        result = []
+        group_start = entries[0].start
+        group_texts = []
+        for entry in entries:
+            if entry.start - group_start >= interval and group_texts:
+                ts = format_timestamp(group_start)
+                result.append(f"{ts} {clean_text(' '.join(group_texts))}")
+                group_start = entry.start
+                group_texts = []
+            group_texts.append(entry.text)
+        if group_texts:
+            ts = format_timestamp(group_start)
+            result.append(f"{ts} {clean_text(' '.join(group_texts))}")
+        return result
 
     if chapters:
         print(f"✅ Found {len(chapters)} chapters — merging with transcript...\n")
@@ -65,21 +104,16 @@ def build_markdown(url: str) -> str:
             end = chapters[i + 1]["start_time"] if i + 1 < len(chapters) else float("inf")
             title = chapter["title"]
 
-            lines.append(f"### {i + 1}: {title}\n")
+            ts = format_timestamp(start)
+            lines.append(f"### {i + 1}: {title} [{ts}]\n")
 
-            # Collect transcript entries that fall within this chapter's time range
-            segment_texts = [
-                entry.text
-                for entry in transcript
-                if start <= entry.start < end
-            ]
-            chapter_text = clean_text(" ".join(segment_texts))
-            lines.append(chapter_text + "\n")
+            chapter_entries = [e for e in transcript if start <= e.start < end]
+            lines.extend(grouped_lines(chapter_entries))
+            lines.append("")
 
     else:
         print("⚠️  No chapters found — outputting full transcript.\n")
-        full_text = clean_text(" ".join(entry.text for entry in transcript))
-        lines.append(full_text)
+        lines.extend(grouped_lines(transcript))
 
     return "\n".join(lines)
 

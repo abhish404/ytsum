@@ -1,70 +1,49 @@
 ## TL;DR
-
-A young entrepreneur's journey from music to startups led to the sale of Shipped to Target for $550M, funding their next venture, Link. Throughout Link's growth, they pivoted in response to customer needs and market trends, introducing new features and products such as QR codes, NFC, and AI-powered business cards. Effective leadership traits, including humility and adaptability, guided the company's success.
+Coding skills are becoming increasingly less valuable as AI takes over, with Replit CEO stating that knowing how to code may be a disadvantage in the future. Developers can now create complex systems and products rapidly with the help of AI-powered tools, making manual coding less necessary. This shift has led to layoffs and a loss of enjoyment for coding, highlighting the need to adapt to the changing landscape where humans and machines interact more closely.
 
 ## Summary
 
-### Early Start
+### AI Coding Reality Check [0:00]
 
-1. Born in Birmingham, studied music at Lee University
-2. Planned to be music producer before pivoting to startups
-3. Interviewed at 4-person startup Shipped
-   1. Rejected for customer service
-   2. Offered new role: head of city launch
+1. 2026 dev experience: 1 line → dozen agents arguing
+2. handcrafted code → instant AI slop
+3. coding no longer fun, layoffs rising
+4. Replit CEO: coding skill now a disadvantage
+5. future = enslave the machines, not nostalgia
 
-### Shipped Growth
+> ⭐ “Knowing how to code is becoming a disadvantage.”
 
-1. Personally led expansion to 63 cities in 2 years
-2. Constant travel but "ton of fun"
-3. Startup sold to Target for $550M after 2.5 years
-4. Early employee stock windfall funded next venture
+### Agent Hiring Toolkit [1:19]
 
-> ⭐ "The road to hell is paved with premature optimization"
+1. Agency: OSS agent templates for every startup role
+2. combine agents in Claude Code → zero-to-product fast
+3. Prompt Fu: unit-test prompts & models
+   1. auto red-team vs prompt injection
+   2. 14-year-old Discord test
+4. Mirrorish: multi-agent prediction engine
+   1. scrapes web → digital society sim
+   2. macro/micro trend forecasts
 
-### Link Origin
+### UI & Context Hacks [3:14]
 
-1. 2019 side-hustle: Instagram growth bot Sidekick
-2. Added QR checkout links for sneaker buyers
-3. Friends/family asked for "digital business card"
-4. Leaned into accidental product-market fit
+1. Impeccable: 17 commands to fix vibe-coded UIs
+   1. distill → simplify
+   2. colorize → brand colors
+   3. animate & delight → uniqueness
+2. Open Viking: FS-based agent memory DB
+   1. tiers cut token costs
+   2. auto-compresses long-term memory
 
-### Pandemic Pivot
+### Unfiltered & DIY Models [4:21]
 
-1. Raised $1M right before lockdown
-2. NFC-QR plastic cards rescued in-person networking
-3. Customers wanted custom designs → 3× price
-4. Added $5/month Link Pro subscription for digital customization
+1. Heretic: removes model guardrails via “obliteration”
+   1. run on Gemma → uncensored obey-anything model
+2. Nano Chat: full LLM pipeline OSS
+   1. $100 GPU → own small model
+   2. tokenize, pre-train, fine-tune, eval, web UI
 
-### Enterprise Expansion
+### Sponsor: Skip Meetings [5:25]
 
-1. Teams requested CRM integrations → Link for Teams
-2. Balanced customer feedback vs visionary building
-3. Followed market pull rather than initial concept
-
-### Link Phone Launch
-
-1. Gave reps an AI-powered number
-2. Auto-logged calls/notes to CRM
-3. Usage 10× higher than business-card users
-4. Price jumped $99 → $149/year
-
-### Blue-Text Breakthrough
-
-1. Customers demanded iMessage (blue) not SMS (green)
-2. Built Link Blue; meeting attendance +50%
-3. Price leapt to $1,048/year
-4. Doubled ARR in 8 months
-
-### Infrastructure Pivot
-
-1. API-first customers built viral AI texting products
-2. Revenue per infra client dwarfed SaaS sales tool
-3. Shut down proven revenue stream to focus on infra
-4. Scaled with usage, not headcount
-
-### CEO Traits
-
-1. Confident yet humble enough to admit wrong calls
-2. Smart enough to spot patterns, not over-think
-3. High EQ; communicate and motivate
-4. Reinvent self repeatedly—do every job, then hire better
+1. Recall AI: one API for Zoom/Meet/Teams recording
+2. transcripts + metadata in real time
+3. HubSpot & ClickUp ship in hours not months
