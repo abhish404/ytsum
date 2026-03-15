@@ -2,7 +2,7 @@ Convert the following transcript into structured markdown notes.
 
 FORMAT RULES:
 
-### Section Heading [timestamp]
+### Section Heading [timestamp](link)
 
 1. point
 2. point
@@ -18,8 +18,8 @@ Break the transcript into 3–6 sections based on topic shifts.
 Headings:
 - short
 - descriptive
-- include the timestamp where the section begins, e.g. [0:00] or [3:45]
-- use the timestamp from the first transcript line in that section
+- include the clickable timestamp link from the first transcript line in that section
+- preserve the full markdown link syntax, e.g. [0:00](https://www.youtube.com/watch?v=...)
 
 Points:
 - numbered lists only
@@ -29,6 +29,7 @@ Points:
 
 Subpoints:
 - only when the speaker elaborates
+- Format subpoints so they start with a tab (\t) indentation, not four space characters.
 
 Callouts:
 - max 1–2 total
@@ -38,6 +39,6 @@ Do NOT:
 - write paragraphs
 - add commentary
 - add introduction text
-- strip timestamps from headings
+- strip or modify timestamp links
 
 Output ONLY markdown.

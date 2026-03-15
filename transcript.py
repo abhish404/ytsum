@@ -75,7 +75,13 @@ def build_markdown(url: str) -> str:
     print(f"🌐 Found transcript: {chosen.language} ({chosen.language_code})")
     transcript = list(chosen.fetch())
 
+    yt_url = f"https://www.youtube.com/watch?v={video_id}"
     lines = []
+
+    def ts_link(seconds: float) -> str:
+        """Return a clickable markdown timestamp link."""
+        label = format_timestamp(seconds)
+        return f"[{label}]({yt_url}&t={int(seconds)}s)"
 
     def grouped_lines(entries: list, interval: float = 8.0) -> list[str]:
         """Group transcript entries into ~interval-second chunks."""
@@ -86,14 +92,12 @@ def build_markdown(url: str) -> str:
         group_texts = []
         for entry in entries:
             if entry.start - group_start >= interval and group_texts:
-                ts = format_timestamp(group_start)
-                result.append(f"{ts} {clean_text(' '.join(group_texts))}")
+                result.append(f"{ts_link(group_start)} {clean_text(' '.join(group_texts))}")
                 group_start = entry.start
                 group_texts = []
             group_texts.append(entry.text)
         if group_texts:
-            ts = format_timestamp(group_start)
-            result.append(f"{ts} {clean_text(' '.join(group_texts))}")
+            result.append(f"{ts_link(group_start)} {clean_text(' '.join(group_texts))}")
         return result
 
     if chapters:
@@ -104,8 +108,7 @@ def build_markdown(url: str) -> str:
             end = chapters[i + 1]["start_time"] if i + 1 < len(chapters) else float("inf")
             title = chapter["title"]
 
-            ts = format_timestamp(start)
-            lines.append(f"### {i + 1}: {title} [{ts}]\n")
+            lines.append(f"### {i + 1}: {title} {ts_link(start)}\n")
 
             chapter_entries = [e for e in transcript if start <= e.start < end]
             lines.extend(grouped_lines(chapter_entries))

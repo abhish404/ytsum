@@ -16,6 +16,7 @@ Requirements:
 import sys
 import re
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from groq import Groq
 
 
@@ -166,14 +167,23 @@ def summarize(transcript_path: str) -> None:
 
     if chapters:
         # --- Path A: video has chapters ---
-        print(f"📄 Found {len(chapters)} chapters to summarize")
+        total = len(chapters)
+        print(f"📄 Found {total} chapters to summarize (parallel)")
 
-        chapter_summaries = []
-        for i, chapter in enumerate(chapters):
-            print(f"⏳ Summarizing chapter {i + 1}/{len(chapters)}: {chapter['heading']}")
+        # Summarize all chapters in parallel
+        chapter_summaries = [None] * total
+
+        def _summarize(idx, chapter):
+            print(f"⏳ [{idx + 1}/{total}] {chapter['heading']}")
             summary = summarize_chapter(client, chapter_prompt, chapter["heading"], chapter["body"])
-            chapter_summaries.append((chapter["heading"], summary))
-            time.sleep(2)
+            return idx, chapter["heading"], summary
+
+        with ThreadPoolExecutor(max_workers=total) as pool:
+            futures = [pool.submit(_summarize, i, ch) for i, ch in enumerate(chapters)]
+            for future in as_completed(futures):
+                idx, heading, summary = future.result()
+                chapter_summaries[idx] = (heading, summary)
+                print(f"✅ [{idx + 1}/{total}] done")
 
         # TL;DR from chapter summaries
         print("⏳ Generating overall TL;DR...")
