@@ -16,9 +16,7 @@ filler_patterns = [
     r"\bi mean\b",
     r"\bwell\b",
     r"\bso\b",
-    r"\bright\b",
-    r"\bokay\b",
-    r"\bi think\b"
+    r"\bokay\b"
 ]
 
 def remove_fillers(text):
@@ -28,21 +26,19 @@ def remove_fillers(text):
     # remove repeated words (e.g., "I I I think")
     text = re.sub(r'\b(\w+)( \1\b)+', r'\1', text)
     text = re.sub(r' +', ' ', text)
-    text = text.replace('.', '')
 
     return text.strip()
 
-# 1. read transcript
-with open(FILE_PATH, "r", encoding="utf-8") as f:
-    transcript = f.read()
+if __name__ == "__main__":
+    # 1. read transcript
+    with open(FILE_PATH, "r", encoding="utf-8") as f:
+        transcript = f.read()
 
-# 2. clean text
-cleaned_text = remove_fillers(transcript)
+    # 2. clean text
+    cleaned_text = remove_fillers(transcript)
 
-# 3. overwrite file
-with open(FILE_PATH, "w", encoding="utf-8") as f:
-    f.write(cleaned_text)
+    # 3. overwrite file
+    with open(FILE_PATH, "w", encoding="utf-8") as f:
+        f.write(cleaned_text)
 
-
-
-print("Transcript cleaned and overwritten.")
+    print("Transcript cleaned and overwritten.")

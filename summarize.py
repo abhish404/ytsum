@@ -158,39 +158,45 @@ def summarize(transcript_path: str) -> None:
     with open(transcript_path, "r", encoding="utf-8") as f:
         transcript = f.read()
 
-    chapters = parse_chapters(transcript)
-    if not chapters:
-        print("⚠️  No chapters found in transcript — make sure it uses ### headings.")
-        sys.exit(1)
-
-    print(f"📄 Found {len(chapters)} chapters to summarize")
     client = Groq(api_key=api_key)
     chapter_prompt = load_prompt("ch_prompt.txt")
-
-    chapter_summaries = []
-    for i, chapter in enumerate(chapters):
-        print(f"⏳ Summarizing chapter {i + 1}/{len(chapters)}: {chapter['heading']}")
-        summary = summarize_chapter(client, chapter_prompt, chapter["heading"], chapter["body"])
-        chapter_summaries.append((chapter["heading"], summary))
-        time.sleep(2)
-
-    # Generate overall TL;DR from chapter summaries
-    print("⏳ Generating overall TL;DR...")
-    combined = "\n\n".join([f"{h}\n{s}" for h, s in chapter_summaries])
     tldr_prompt = load_prompt("tldr_prompt.txt")
-    tldr = call_groq(client, tldr_prompt + "\n\n" + combined, model="llama-3.1-8b-instant")
 
-    # Build final markdown
-    lines = []
-    lines.append("## TL;DR")
-    lines.append(tldr)
-    lines.append("")
-    lines.append("## Chapter Summaries")
-    lines.append("")
-    for heading, summary in chapter_summaries:
-        lines.append(heading)
-        lines.append(summary)
-        lines.append("")
+    chapters = parse_chapters(transcript)
+
+    if chapters:
+        # --- Path A: video has chapters ---
+        print(f"📄 Found {len(chapters)} chapters to summarize")
+
+        chapter_summaries = []
+        for i, chapter in enumerate(chapters):
+            print(f"⏳ Summarizing chapter {i + 1}/{len(chapters)}: {chapter['heading']}")
+            summary = summarize_chapter(client, chapter_prompt, chapter["heading"], chapter["body"])
+            chapter_summaries.append((chapter["heading"], summary))
+            time.sleep(2)
+
+        # TL;DR from chapter summaries
+        print("⏳ Generating overall TL;DR...")
+        combined = "\n\n".join([f"{h}\n{s}" for h, s in chapter_summaries])
+        tldr = call_groq(client, tldr_prompt + "\n\n" + combined, model="llama-3.1-8b-instant")
+
+        # Build final markdown
+        lines = ["## TL;DR", tldr, "", "## Chapter Summaries", ""]
+        for heading, summary in chapter_summaries:
+            lines.append(heading)
+            lines.append(summary)
+            lines.append("")
+
+    else:
+        # --- Path B: no chapters — summarize full transcript ---
+        print("⚠️  No chapters found — summarizing full transcript as one block")
+
+        summary = summarize_chapter(client, chapter_prompt, "### Full Transcript", transcript)
+
+        print("⏳ Generating TL;DR...")
+        tldr = call_groq(client, tldr_prompt + "\n\n" + summary, model="llama-3.1-8b-instant")
+
+        lines = ["## TL;DR", tldr, "", "## Summary", "", summary, ""]
 
     output = "\n".join(lines)
 
