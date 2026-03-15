@@ -29,12 +29,12 @@ def extract_video_id(url: str) -> str | None:
     return None
 
 
-def get_chapters(url: str) -> list[dict]:
-    """Fetch chapter list from video metadata via yt-dlp."""
+def get_video_info(url: str) -> dict:
+    """Fetch video metadata via yt-dlp."""
     ydl_opts = {"quiet": True, "skip_download": True}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
-        return info.get("chapters") or []
+        return info
 
 
 def format_timestamp(seconds: float) -> str:
@@ -51,15 +51,25 @@ def clean_text(text: str) -> str:
     return " ".join(text.replace(">>", "").split())
 
 
-def build_markdown(url: str) -> str:
+def build_markdown(url: str) -> tuple[str, dict]:
     video_id = extract_video_id(url)
     if not video_id:
         print("❌ Could not extract video ID from URL.")
         sys.exit(1)
 
     print(f"📹 Video ID: {video_id}")
-    print("⏳ Fetching chapters...")
-    chapters = get_chapters(url)
+    print("⏳ Fetching video info...")
+    info = get_video_info(url)
+    chapters = info.get("chapters") or []
+
+    metadata = {
+        "video_id": video_id,
+        "title": info.get("title", "Unknown"),
+        "url": url,
+        "duration_seconds": info.get("duration", 0),
+        "uploader": info.get("uploader", "Unknown"),
+        "chapter_count": len(chapters),
+    }
 
     print("⏳ Fetching transcript...")
     ytt = YouTubeTranscriptApi()
@@ -73,6 +83,7 @@ def build_markdown(url: str) -> str:
 
     chosen = available[0]
     print(f"🌐 Found transcript: {chosen.language} ({chosen.language_code})")
+    metadata["transcript_language"] = f"{chosen.language} ({chosen.language_code})"
     transcript = list(chosen.fetch())
 
     yt_url = f"https://www.youtube.com/watch?v={video_id}"
@@ -118,7 +129,7 @@ def build_markdown(url: str) -> str:
         print("⚠️  No chapters found — outputting full transcript.\n")
         lines.extend(grouped_lines(transcript))
 
-    return "\n".join(lines)
+    return "\n".join(lines), metadata
 
 
 if __name__ == "__main__":
@@ -127,7 +138,7 @@ if __name__ == "__main__":
     else:
         url = sys.argv[1]
 
-    markdown = build_markdown(url)
+    markdown, metadata = build_markdown(url)
 
     # Save to file
     output_file = "transcript.md"

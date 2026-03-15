@@ -1,108 +1,106 @@
-### 1: Intro [0:00](https://www.youtube.com/watch?v=-efamOOee2Q&t=0s)
+### 1: Intro [0:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=0s)
 
-[0:02](https://www.youtube.com/watch?v=-efamOOee2Q&t=2s) [music] [music]
-[0:13](https://www.youtube.com/watch?v=-efamOOee2Q&t=13s) there is a version of this video where I tell you [music] that Google is a dream of non-stop food and sleeping pods. And while those things are true, those aren't the things
-[0:22](https://www.youtube.com/watch?v=-efamOOee2Q&t=22s) [music] that stay with you. I've been a software engineer here for exactly over an year now. When I walked in, I knew the technical bar would be high. [music] I expected the complex system designs
-[0:30](https://www.youtube.com/watch?v=-efamOOee2Q&t=30s) and the steep learning curve as . And that part was definitely true, but writing good code is just the baseline of [music] what you're expected to do here. The unexpected challenge was
-[0:40](https://www.youtube.com/watch?v=-efamOOee2Q&t=40s) everything else. From my first ever code review [music] to finding my identity after a major injury, from strategic curiosity and
-[0:48](https://www.youtube.com/watch?v=-efamOOee2Q&t=48s) using AI to lead as a junior to the brutal reality of [music] context switching and burnout while building this channel. I'll also share how I used the one-on- ones with my manager [music]
-[0:57](https://www.youtube.com/watch?v=-efamOOee2Q&t=57s) to align on my goals and set the correct expectations more importantly. [music] And finally, I'll share how I found my identity when I could not write a single line of code. Here are
-[1:06](https://www.youtube.com/watch?v=-efamOOee2Q&t=66s) the quiet honest lessons that I've learned over [music] the past year while working at Google. The first truth
+[0:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=0s) C was one of the first high-level languages to gain widespread adoption. It's since become the foundation for modern operating systems, databases, and other languages. Yet, because of its
+[0:10](https://www.youtube.com/watch?v=63zGtiv89bA&t=10s) age, it has a lot of surprising behaviors, many of which have been propagated to other programming languages. One of these is sometimes given as an example of why JavaScript is
+[0:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=19s) weird, even though the main source of confusion has its origins in C. Today, I've compiled a list of my favorite facts about C. We'll start with
+[0:27](https://www.youtube.com/watch?v=63zGtiv89bA&t=27s) the things you really ought to know and then we'll get further down into the more obscure. For those unfamiliar,
 
-### 2: English is most important programming language [1:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=71s)
+### 2: Pointers [0:31](https://www.youtube.com/watch?v=63zGtiv89bA&t=31s)
 
-[1:12](https://www.youtube.com/watch?v=-efamOOee2Q&t=72s) I learned is that English is the most important programming language. And hear me out till the end. [music] I used to think that my value comes from how fast I can write a function or a piece of
-[1:21](https://www.youtube.com/watch?v=-efamOOee2Q&t=81s) code. But at the scale, you don't just build things. you have to justify them. I learned that writing a design doc is much harder [music] and more valuable as than writing the code
-[1:30](https://www.youtube.com/watch?v=-efamOOee2Q&t=90s) itself. You have to convince 10 smart people on why your solution works before [music] you even start writing a single line of code. I realized if I can't articulate and explain my logic in
-[1:40](https://www.youtube.com/watch?v=-efamOOee2Q&t=100s) simple English then [music] my C++ does
+[0:32](https://www.youtube.com/watch?v=63zGtiv89bA&t=32s) let's quickly review one of C's most essential concepts, pointers. At their core, pointers are just variables that point to the location of another variable in memory. The syntax can be a
+[0:42](https://www.youtube.com/watch?v=63zGtiv89bA&t=42s) little confusing at first. If you write int star p, you're declaring an integer pointer called p. amperand a gives you the memory address of variable a. Then
+[0:53](https://www.youtube.com/watch?v=63zGtiv89bA&t=53s) star p gives you the value that p points to. One of the first times pointers
 
-### 3: Code is read way more than it is written [1:42](https://www.youtube.com/watch?v=-efamOOee2Q&t=102s)
+### 3: Arrays are (not) pointers [0:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=56s)
 
-[1:42](https://www.youtube.com/watch?v=-efamOOee2Q&t=102s) not even matter and even when you do write the code right prepare for the software engineers ego death. [music] initially when I joined Google I had applied for the C++ readability the
-[1:52](https://www.youtube.com/watch?v=-efamOOee2Q&t=112s) moment I entered [music] and it's a certification that says that you're somewhat of an expert in this particular language but to get that certification you have to
-[2:02](https://www.youtube.com/watch?v=-efamOOee2Q&t=122s) pass certain hoops you [music] have to send out PRs to reviews from readability mentors and they will tear your PR apart I remember 
-[2:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=131s) a single PR more than 50 [music] comments variable naming memory safeties coding styles it will almost feel personal but of course it's not use
-[2:20](https://www.youtube.com/watch?v=-efamOOee2Q&t=140s) quality control and that taught me that code is read a 100 times more than it's written and here's the full circle moment today I am a readability mentor and I try to adhere
-[2:29](https://www.youtube.com/watch?v=-efamOOee2Q&t=149s) to the [music] same level of guidelines and review others PRs with the same [music] principles that painful process was the only reason that
-[2:38](https://www.youtube.com/watch?v=-efamOOee2Q&t=158s) I reached this level to survive
+[0:58](https://www.youtube.com/watch?v=63zGtiv89bA&t=58s) really clicked for me was when I learned that arrays are but not exactly pointers. An array is essentially just a pointer to the first
+[1:06](https://www.youtube.com/watch?v=63zGtiv89bA&t=66s) element in that array. This is where pointer arithmetic comes in. If you add one to your pointer, C gives you the address of the second element in that array, accounting for the size of each
+[1:16](https://www.youtube.com/watch?v=63zGtiv89bA&t=76s) element automatically. In this way, dreferencing array + one is equivalent to indexing your array at index 1. And the same is true in general.
+[1:24](https://www.youtube.com/watch?v=63zGtiv89bA&t=84s) Dreferencing array plus index is equivalent to getting the value of your array at that index. Now, here's where it gets interesting. If array at index
+[1:32](https://www.youtube.com/watch?v=63zGtiv89bA&t=92s) is equivalent to dreferencing array plus index, and addition is commutative, then this must be equivalent to swapping index and the array. And indeed, it is.
+[1:42](https://www.youtube.com/watch?v=63zGtiv89bA&t=102s) You can write index array of two in C and it will compile and work exactly the same as getting index 2 of array. It's a fun party trick. arrays
+[1:51](https://www.youtube.com/watch?v=63zGtiv89bA&t=111s) act pointers, but that doesn't mean that arrays are pointers. What we're observing here is called array decay. The automatic conversion of arrays to pointers in certain contexts. Switching
 
-### 4: Strategic Curiosity ! [2:39](https://www.youtube.com/watch?v=-efamOOee2Q&t=159s)
+### 4: The stack [2:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=120s)
 
-[2:40](https://www.youtube.com/watch?v=-efamOOee2Q&t=160s) this I had to master something that I'd to call strategic curiosity and unfortunately as right as this sounds don't be afraid to ask questions
-[2:48](https://www.youtube.com/watch?v=-efamOOee2Q&t=168s) anywhere. , it's not very realistic [music] and more often than not in our careers, we'll find ourselves nodding on to things that we probably don't understand as good as we'd to in
-[2:58](https://www.youtube.com/watch?v=-efamOOee2Q&t=178s) that moment and it's [music] completely natural. , it's very important to find people who are ready to teach within your team. And again, that might be a junior, that might be a senior, it does not matter. It's [music] it's very
-[3:07](https://www.youtube.com/watch?v=-efamOOee2Q&t=187s) important that they're ready to teach and , you build that trust with them. You have that safety net and in that safe zone you can then be
-[3:15](https://www.youtube.com/watch?v=-efamOOee2Q&t=195s) curious, right? I asked them all the silly questions in private and and I learned that you have to be [music] smart about where you learn. You drain the knowledge from this -called
-[3:23](https://www.youtube.com/watch?v=-efamOOee2Q&t=203s) safe circle and then you have the confidence to show up [music] to big meetings and be confident in them. I also learned that you don't need
+[2:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=121s) gears, what happens when you call a function? , your program maintains something called the stack. When you call a function, a new stack
+[2:09](https://www.youtube.com/watch?v=63zGtiv89bA&t=129s) frame gets pushed onto the stack. This frame contains all the local variables for that function as as information about where to return to when the function finishes. When the function
+[2:18](https://www.youtube.com/watch?v=63zGtiv89bA&t=138s) returns, the stack frame gets popped off and all those local variables are gone. This leads to a common mistake, returning a pointer to a stack variable. Let's say you have a function that
+[2:27](https://www.youtube.com/watch?v=63zGtiv89bA&t=147s) creates an integer, stores it in a local variable, and then returns a pointer to that variable. Once the function returns, that memory is no longer valid.
+[2:35](https://www.youtube.com/watch?v=63zGtiv89bA&t=155s) Your pointer could now be pointing to garbage, and using it counts as undefined behavior. The alternative to
 
-### 5: Leading as a junior SWE [3:29](https://www.youtube.com/watch?v=-efamOOee2Q&t=209s)
+### 5: The heap [2:40](https://www.youtube.com/watch?v=63zGtiv89bA&t=160s)
 
-[3:30](https://www.youtube.com/watch?v=-efamOOee2Q&t=210s) to be a senior title [music] to lead. you just need to be an early adopter in my opinion. I dove deep into AI tools before most of my team did. And just
-[3:38](https://www.youtube.com/watch?v=-efamOOee2Q&t=218s) because I was an early adopter, I was able to influence my team in [music] the way that they code in their day-to-day productivity by integrating all of these AI tools in their day-to-day workflows.
-[3:47](https://www.youtube.com/watch?v=-efamOOee2Q&t=227s) [music] that really felt really, really good. It taught me that value isn't just about tenure. It's about the fresh new perspective that you bring to the table from writing code, design
-[3:57](https://www.youtube.com/watch?v=-efamOOee2Q&t=237s) [music] documents, and even debugging on call issues. I have integrated AI into all of my day-to-day workflows. And honestly, the pace that I learn [music]
-[4:05](https://www.youtube.com/watch?v=-efamOOee2Q&t=245s) with AI, it's absolutely unreal. But
+[2:41](https://www.youtube.com/watch?v=63zGtiv89bA&t=161s) the stack is the heap. If you need memory that outlives a function call or if you need a lot of memory, you'll probably be using the heap. The heap is a region of memory that you can allocate
+[2:50](https://www.youtube.com/watch?v=63zGtiv89bA&t=170s) and free manually. To allocate memory on the heap, you just use malo, which stands for memory allocate, and you tell it how many bytes you need, and it gives you a pointer to that memory. When
+[3:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=180s) you're done with it, you can call free to give it back. If you forget to free memory that you've allocated, you have what's called a memory leak. your program will keep using more and more
+[3:08](https://www.youtube.com/watch?v=63zGtiv89bA&t=188s) memory until it eventually slows down or cracks.
 
-### 6: The Art of Context Switching [4:07](https://www.youtube.com/watch?v=-efamOOee2Q&t=247s)
+### 6: Struct alignment [3:12](https://www.youtube.com/watch?v=63zGtiv89bA&t=192s)
 
-[4:07](https://www.youtube.com/watch?v=-efamOOee2Q&t=247s) the hardest lesson wasn't even about the code. It was about the shift. Balancing a full-time job at Google while also trying to build [music] this YouTube channel introduced me to a new demon,
-[4:17](https://www.youtube.com/watch?v=-efamOOee2Q&t=257s) burnout. And I had to start learning the art of context switching. I learned that mentally I have to clock out of my job, whether it be 6 p.m., 7:00 p.m., 8:00
-[4:25](https://www.youtube.com/watch?v=-efamOOee2Q&t=265s) p.m., whatever. But [music] once that clock out happens, my only focus is project YouTube. If I carry the bugs into my creative time, I ruin both. And to find the energy to do this, I had to
-[4:35](https://www.youtube.com/watch?v=-efamOOee2Q&t=275s) make a big lifestyle change. I had to go from a consumer to a creator. I used to spend my free hours, , watching Netflix or scrolling wheels.
-[4:44](https://www.youtube.com/watch?v=-efamOOee2Q&t=284s) But [music] I had to cut that time to absolutely zero. almost zero. Why? because ideation takes a lot [music] of your energy. Scripting will take a
-[4:52](https://www.youtube.com/watch?v=-efamOOee2Q&t=292s) lot of focus and setting all these lights up after 8:00 p.m. when I reach home takes a lot of willpower. Honestly, I traded the quick easy dopamine of
-[5:01](https://www.youtube.com/watch?v=-efamOOee2Q&t=301s) consumption. [music] with the long hard marathon dopamine of [music] building it meant sacrificing my chill time to figure out thumbnails and story
-[5:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=311s) lines and new ideas but [music] honestly that feeling has been liberating the feeling I get when I upload a single video that was built by scratch from me
-[5:19](https://www.youtube.com/watch?v=-efamOOee2Q&t=319s) that is a really [music] liberating feeling yeah that feeling is worth more than a thousand hours of watching somebody [music] else live out their life on YouTube or
-[5:28](https://www.youtube.com/watch?v=-efamOOee2Q&t=328s) some other content platform right and
+[3:12](https://www.youtube.com/watch?v=63zGtiv89bA&t=192s) Next, let's talk about strrus. A strruct is just a way to group related variables together. It's a class in an object-oriented language. Now, here's
+[3:20](https://www.youtube.com/watch?v=63zGtiv89bA&t=200s) a question. How much memory does this strct take up? You might think that a car is one byte and an int is four bytes. , that's 1 + 4 + 1 is 6 bytes
+[3:29](https://www.youtube.com/watch?v=63zGtiv89bA&t=209s) total, right? , not quite. On most systems, this strct will take up 12 bytes. Why? Because of something called strruct alignment, modern
+[3:38](https://www.youtube.com/watch?v=63zGtiv89bA&t=218s) processors are optimized to read memory in chunks, usually four or eight bytes at a time. To make this efficient, the compiler adds padding to align fields to
+[3:47](https://www.youtube.com/watch?v=63zGtiv89bA&t=227s) addresses that are multiples of their size. After that first character, the compiler adds three bytes of padding that the int starts on a four byte boundary. Then after the second car, it
+[3:57](https://www.youtube.com/watch?v=63zGtiv89bA&t=237s) adds three more bytes. the entire struck size is a multiple of four. But if we rearrange the fields this, now it only takes eight bytes. The two
+[4:05](https://www.youtube.com/watch?v=63zGtiv89bA&t=245s) car fields can sit next to each other without wasting space. The takeaway is that the field order matters when you're defining strcts. Grouping smaller types together can save significant memory,
+[4:14](https://www.youtube.com/watch?v=63zGtiv89bA&t=254s) especially if you're creating millions of them or are programming for a system with heavy memory limitations. Next,
 
-### 7: The Power of Proximity [5:30](https://www.youtube.com/watch?v=-efamOOee2Q&t=330s)
+### 7: Crazy compiler optimizations [4:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=259s)
 
-[5:30](https://www.youtube.com/watch?v=-efamOOee2Q&t=330s) then there is The art [music] of alignment. The code is only half the battle. The other half is the environment. there is a theory called the smartest friends theory. [music] It
-[5:39](https://www.youtube.com/watch?v=-efamOOee2Q&t=339s) says that you are the average of the five people around you. And at Google I feel that this is amplified. I remember bumping into someone in the
-[5:47](https://www.youtube.com/watch?v=-efamOOee2Q&t=347s) micro kitchen that was the person that I was following during my college time, their notes and [music] their videos. for my personal learning as . being
-[5:56](https://www.youtube.com/watch?v=-efamOOee2Q&t=356s) surrounded by people this smart is definitely intimidating. but I also learned the power of proximity. just being in the same room as them
-[6:04](https://www.youtube.com/watch?v=-efamOOee2Q&t=364s) drags you up to their level. You subconsciously pick up their problem solving patterns. It's [music] uncomfortable but it's the fastest way to grow. And then comes the
+[4:20](https://www.youtube.com/watch?v=63zGtiv89bA&t=260s) let's talk about the compiler a bit. In particular, its gnarly optimizations. A really cool example is something called scalar evolution. Let's say you write a
+[4:29](https://www.youtube.com/watch?v=63zGtiv89bA&t=269s) simple loop to calculate the sum of integers from 1 to n. This code has O of N time complexity. If you double n, it should take twice as long to run. But if
+[4:37](https://www.youtube.com/watch?v=63zGtiv89bA&t=277s) you compile this with even basic optimizations, the compiler knows that it can replace the entire loop with the formula for triangular numbers. Your code is now O of one. And apparently
+[4:47](https://www.youtube.com/watch?v=63zGtiv89bA&t=287s) it's not doing this by pattern matching. It is figuring it out from first principles. Now, this is a pretty extreme example of a compiler optimization, but in general, the rule
+[4:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=296s) of thumb is that you should focus on writing good algorithms in readable ways. Minor changes in the name of optimization that obfuscate your code are often not necessary and can even
+[5:05](https://www.youtube.com/watch?v=63zGtiv89bA&t=305s) hurt performance if you're not careful. Now we're getting a bit deeper in the iceberg towards things that might surprise you even if you have a bit of experience in C. By the way, if you're
+[5:14](https://www.youtube.com/watch?v=63zGtiv89bA&t=314s) enjoying the video, please let me know by liking it or subscribing. It really helps me out. C lets you operate on the
 
-### 8: The Art of Alignment [6:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=371s)
+### 8: Bitwise operations on signed types [5:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=319s)
 
-[6:12](https://www.youtube.com/watch?v=-efamOOee2Q&t=372s) art of alignment. I learned that the most important meeting of my week is not the team standup. It is the one-on-one with my manager. In the beginning I just
-[6:20](https://www.youtube.com/watch?v=-efamOOee2Q&t=380s) treated these meetings as status updates. I used just [music] used to blur out whatever I had
+[5:20](https://www.youtube.com/watch?v=63zGtiv89bA&t=320s) individual bits of data with bitwise operations. What happens if you do this with a negative number? To answer that, we first need to talk about how negative numbers are stored. On virtually all
+[5:29](https://www.youtube.com/watch?v=63zGtiv89bA&t=329s) modern systems, negative integers are represented using two's complement. Two's complement works a lot binary, except instead of the most significant bit being a power of two,
+[5:38](https://www.youtube.com/watch?v=63zGtiv89bA&t=338s) it's the negative of its typical value. Before 2023, the C standard never required two's complement representation for signed integers. , Bitwise
+[5:47](https://www.youtube.com/watch?v=63zGtiv89bA&t=347s) operations on signed integers were implementation specific. As of C23, two's complement is now required. And these operations are finally 
 
-### 9: The Importance of voicing your challenges [6:25](https://www.youtube.com/watch?v=-efamOOee2Q&t=385s)
+### 9: Unsafe behaviour in the C standard library [5:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=356s)
 
-[6:26](https://www.youtube.com/watch?v=-efamOOee2Q&t=386s) done. But but later on quickly I had realized that [music] these are the meetings that are going to stare my career in the right way. This is where we set the goals. This is where I talk
-[6:35](https://www.youtube.com/watch?v=-efamOOee2Q&t=395s) about the challenges [music] that I'm facing. And I used to think that telling my manager that I'm stuck on something would probably make me look weak. [music] But that was completely wrong. in
-[6:43](https://www.youtube.com/watch?v=-efamOOee2Q&t=403s) fact they want to know what you're stuck on. They want to know the challenges that you're facing and and the complexity that [music] you're dealing with. if I'm struggling with some problem for
-[6:53](https://www.youtube.com/watch?v=-efamOOee2Q&t=413s) example let's say I'm just struggling with some legacy code base. I make it a point to bring it up. It [music] shows that I'm tackling hard problems, plus they're the people who fight for your promotion in a closed room. if
-[7:03](https://www.youtube.com/watch?v=-efamOOee2Q&t=423s) they don't know the complexity of the problems that you're that you're facing, how can they ever advocate for you? along with sharing my wins, I also
-[7:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=431s) stopped hiding my struggles and [music] and yeah, that has been one of the single most important investments that I've done into my career growth,
+[5:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=356s) defined. Something you should definitely know. The C standard library contains unsafe functions. Take stir copy for example. It copies a string from one location to another, but it doesn't
+[6:05](https://www.youtube.com/watch?v=63zGtiv89bA&t=365s) check if the destination buffer is large enough. If the source string is longer than the destination buffer, you have a buffer overflow, which can be a big problem. Another one is A2I, which
+[6:15](https://www.youtube.com/watch?v=63zGtiv89bA&t=375s) converts a string to an integer. The problem is it has no way to report errors. It will try to parse the string you give it and will fail silently.
 
-### 10: Enjoying the Grind [7:19](https://www.youtube.com/watch?v=-efamOOee2Q&t=439s)
+### 10: Digraphs and trigraphs [6:23](https://www.youtube.com/watch?v=63zGtiv89bA&t=383s)
 
-[7:19](https://www.youtube.com/watch?v=-efamOOee2Q&t=439s) I'd [music] say. And honestly, unlike the common advice, I never really learned to push back. And of course, this is my personal experience. But [music] I felt that I was never working more than I than I wanted to. I
-[7:28](https://www.youtube.com/watch?v=-efamOOee2Q&t=448s) struggled to say no because I enjoy the grind and it's not I don't want to do this. yeah, [music]
+[6:23](https://www.youtube.com/watch?v=63zGtiv89bA&t=383s) Now, here's something that exists purely because C is old, but is totally useless today. Back in the day, not all keyboards had characters the curly
+[6:31](https://www.youtube.com/watch?v=63zGtiv89bA&t=391s) brackets. , the C standard introduced diagraphs and trigraphs as alternative ways to write these characters. Diagraphs are two character sequences
+[6:39](https://www.youtube.com/watch?v=63zGtiv89bA&t=399s) that represent single characters. For example, less than percent and percent greater than can be used instead of the curly brackets. This means that this
+[6:48](https://www.youtube.com/watch?v=63zGtiv89bA&t=408s) code is completely valid C. We can make it even uglier with triraphphs which use three character sequences starting with two question marks. These days
+[6:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=416s) triigraphs will give you a compiler warning by default and need to be enabled with a compiler flag. Now
 
-### 11: Impact is far greater than Volume [7:33](https://www.youtube.com/watch?v=-efamOOee2Q&t=453s)
+### 11: main is not _start [7:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=421s)
 
-[7:34](https://www.youtube.com/watch?v=-efamOOee2Q&t=454s) but one thing my manager definitely taught me is that impact is far greater than volume. Just because I can do everything does not [music] mean I should. if I close 10 tickets that
-[7:43](https://www.youtube.com/watch?v=-efamOOee2Q&t=463s) that nobody really cares about versus one complex problem that defines the entire quart quarter. Of course that one complex problem wins every [music] time. That
-[7:52](https://www.youtube.com/watch?v=-efamOOee2Q&t=472s) really helped me channel my high energy into the right work. Finally 
+[7:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=421s) something that's fun to know but a little more useful is that main is not the true entry point of your program. Before main runs, the program has to do a bunch of setup work. It needs to
+[7:10](https://www.youtube.com/watch?v=63zGtiv89bA&t=430s) prepare the command line arguments, initialize the C standard library, and on. This all happens in a function called underscore start. You can customize your start function, giving
+[7:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=439s) you complete control over the program's initialization. Sometimes this is necessary if you want to be free from lib C. For example, if you're writing a very minimal program or working in an
+[7:28](https://www.youtube.com/watch?v=63zGtiv89bA&t=448s) embedded environment, you might want to skip all of the standard library setup and do it yourself. Now, this fact is
 
-### 12: An identity nobody can take away from you [7:56](https://www.youtube.com/watch?v=-efamOOee2Q&t=476s)
+### 12: A byte is not 8 bits [7:33](https://www.youtube.com/watch?v=63zGtiv89bA&t=453s)
 
-[7:57](https://www.youtube.com/watch?v=-efamOOee2Q&t=477s) the deepest lesson this year I broke my collar bone playing football. I had [music] surgery. from a physical point of view it was a pause it was a [music] complete pause on my life
-[8:06](https://www.youtube.com/watch?v=-efamOOee2Q&t=486s) and in that silence I faced an identity crisis when you work at a company this it's very easy to let your job title become [music] your personality when I couldn't code or
-[8:15](https://www.youtube.com/watch?v=-efamOOee2Q&t=495s) couldn't play sports I had to ask myself who is Satukbatra without the company ID badge right I learned that you need to have an agency [music] that your
-[8:25](https://www.youtube.com/watch?v=-efamOOee2Q&t=505s) employer did not give you neither can they take away from you for me it's it's this channel it's It's it's football, it's pan, tennis, [music] reading, it's it's a bunch of other things, right? And
-[8:34](https://www.youtube.com/watch?v=-efamOOee2Q&t=514s) and they keep me anchored to reality.
+[7:34](https://www.youtube.com/watch?v=63zGtiv89bA&t=454s) one of my favorites because it sounds pedantic, but can be important to know. One of the most common data types in C is the character car. You may
+[7:43](https://www.youtube.com/watch?v=63zGtiv89bA&t=463s) know that a car is one bite and you probably also know that one bite is eight bits. But , while the C standard does guarantee that a car is
+[7:52](https://www.youtube.com/watch?v=63zGtiv89bA&t=472s) one bite, it says nothing about how many bits are in a bite. And because it's never directly defined, it's technically implementation specific. There are
+[8:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=481s) architectures where the number of bits in a bite can be 16, 32, or even 24. You usually see this in digital signal processors or embedded systems where the
+[8:11](https://www.youtube.com/watch?v=63zGtiv89bA&t=491s) hardware is designed to work with specific word sizes. . And finally,
 
-### 13: Managing the "Golden Handcuffs" [8:36](https://www.youtube.com/watch?v=-efamOOee2Q&t=516s)
+### 13: Don't start a number with 0 [8:14](https://www.youtube.com/watch?v=63zGtiv89bA&t=494s)
 
-[8:37](https://www.youtube.com/watch?v=-efamOOee2Q&t=517s) And I also learned to manage [music] the -called golden handcuffs, right? it's very easy to let your salary inflate your [music] your spendings and whatever. , I've tried to stay
-[8:46](https://www.youtube.com/watch?v=-efamOOee2Q&t=526s) grounded, reminding myself that my job is there to fuel my life, not become
-
-### 14: 1 Year in ! [8:52](https://www.youtube.com/watch?v=-efamOOee2Q&t=532s)
-
-[8:52](https://www.youtube.com/watch?v=-efamOOee2Q&t=532s) my life. , one year [music] in, I don't have it all figured out, but I'm calmer. I'm clearer on my goals, and I realize that my career is a marathon. It's not a sprint, but if you are aiming
-[9:01](https://www.youtube.com/watch?v=-efamOOee2Q&t=541s) for a role this, keep going. It's a great place to be. Just remember to bring your own life as with you [music] when you walk through those doors.
+[8:16](https://www.youtube.com/watch?v=63zGtiv89bA&t=496s) we've reached the fact that inspired this video. You've probably seen those posts on the internet making fun of JavaScript's dynamic typing. One I've seen showed 010 double equals in
+[8:26](https://www.youtube.com/watch?v=63zGtiv89bA&t=506s) quotations 8 as being true, commenting on how weird JavaScript is. But aside from the dynamic typing, this is also true in C. what's going on? Often you
+[8:36](https://www.youtube.com/watch?v=63zGtiv89bA&t=516s) want to give numbers in specific base representations. You can do this using what's called a literal prefix. The most common is 0x for hexodimal. For example,
+[8:46](https://www.youtube.com/watch?v=63zGtiv89bA&t=526s) 0x FF is 255. , we can also write numbers in octal, which is base 8. But for whatever reason, it was decided that the literal prefix for octal should just
+[8:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=536s) be a 0. when you have 0 1 0, it's interpreting that as 1 0 in base 8, which is equal to 8. The same literal
+[9:05](https://www.youtube.com/watch?v=63zGtiv89bA&t=545s) prefix of just the zero has been carried over into JavaScript. Alrighty. , that's it for this deep dive into the C iceberg. Hopefully, you were able to
+[9:13](https://www.youtube.com/watch?v=63zGtiv89bA&t=553s) learn something new. And , of course, there is much more that I could have covered. , if you have any fun facts about C, please leave them in the comments. If you made it this far into the video, you might be interested in
+[9:22](https://www.youtube.com/watch?v=63zGtiv89bA&t=562s) this other video where I talk about easy args, which is a minimal argument parsing library in C. YouTube's recommendation algorithm thinks that you'll this other video on the
+[9:30](https://www.youtube.com/watch?v=63zGtiv89bA&t=570s) screen. , make of that what you will. And if you want to see more content this in the future, feel free to subscribe.

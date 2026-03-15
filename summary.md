@@ -1,204 +1,187 @@
 ## TL;DR
-A software engineer shares their first year of experiences at Google, highlighting lessons learned on code quality, burnout prevention, strategic curiosity, and leadership. They emphasize the importance of code readability, the value of fresh perspectives, and the need for self-awareness to prioritize and manage one's workload. The engineer also discusses how Google's unique culture, tools, and environment impact their growth and personal development, and shares insights on maintaining a work-life balance, personal agency, and identity beyond their job title.
+Much of the "weirdness" experienced in programming languages like JavaScript can be attributed to its roots in C, a high-level language that still underpins many modern systems and databases. However, C's low-level nature and surprising behaviors have been copied into other languages, causing confusion among developers. A deep understanding of C's intricacies can help resolve many of these mysteries, including its complex array and pointer systems, undefined behavior, and obscure compiler optimizations. By grasping these concepts, programmers can write more efficient and reliable code.
 
 ## Chapter Summaries
 
-### 1: Intro [0:00](https://www.youtube.com/watch?v=-efamOOee2Q&t=0s)
-### 1: Intro [0:00](https://www.youtube.com/watch?v=-efamOOee2Q&t=0s)
+### 1: Intro [0:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=0s)
+### 1: Intro [0:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=0s)
 
-1. Google ≠ food & pods; those perks fade
-2. 1+ yr SWE: tech bar high, code quality baseline
-3. Real shocks: code review, identity crisis, AI leadership, burnout, 1:1s
+1. C pioneered high-level languages & still underpins OS, DBs, newer langs
+2. Age → surprising behaviors copied elsewhere (e.g., JS “weirdness”)
+3. Video orders facts: essential first, then obscure
 
-> ⭐ Writing good code is just the baseline
+> ⭐ Much of JS confusion actually traces back to C
 
-### 2: First Code Review Reality [1:06](https://www.youtube.com/watch?v=-efamOOee2Q&t=66s)
+### 2: Arrays ≠ Pointers [1:12](https://www.youtube.com/watch?v=63zGtiv89bA&t=72s)
 
-1. CL shredded by 30+ comments
-2. Learned: readability, style, edge-case obsession
-3. Culture: thoroughness > speed
+1. `int a[10]` vs `int *p` look interchangeable but differ
+2. `sizeof(a)` gives total bytes; `sizeof(p)` gives pointer size
+   1. compile-time constant vs runtime value
+3. Array identifier decays to pointer only in most expressions
+   1. exceptions: `&a`, `sizeof`, `_Alignof`
 
-### 3: Identity After Injury [2:15](https://www.youtube.com/watch?v=-efamOOee2Q&t=135s)
+### 3: Undefined Behavior [3:45](https://www.youtube.com/watch?v=63zGtiv89bA&t=225s)
 
-1. Wrist injury → zero coding for weeks
-2. Panic: value = lines written?
-3. Pivoted to design docs, mentoring, meetings
-4. Identity ≠ code; value multi-dimensional
+1. UB lets compilers optimize aggressively
+2. Classic trap: `i++ + i++` — no sequence point
+3. Signed overflow = UB; unsigned wrap is defined
+   1. enables auto-vectorization
 
-### 4: AI & Strategic Curiosity [3:40](https://www.youtube.com/watch?v=-efamOOee2Q&t=220s)
+### 4: Const & Volatile Qualifiers [6:30](https://www.youtube.com/watch?v=63zGtiv89bA&t=390s)
 
-1. Junior leading team via AI prototyping
-2. Built demo overnight, won exec buy-in
-3. Lesson: curiosity + tools > tenure
+1. `const` means “read-only,” not “constant”
+   1. `const int *p` vs `int *const p` — placement matters
+2. `volatile` forbids compiler caching
+   1. used for memory-mapped I/O, signal handlers
+3. Both can be combined: `volatile const`
 
-### 5: Context Switching & Burnout [5:05](https://www.youtube.com/watch?v=-efamOOee2Q&t=305s)
+### 5: Struct Padding & Bitfields [9:15](https://www.youtube.com/watch?v=63zGtiv89bA&t=555s)
 
-1. 3 projects + channel + interviews
-2. 30-min slots, constant ramp-up
-3. Burnout signs: Sunday dread, shallow work
-4. Fix: ruthless priority, block focus time, say no
+1. Compiler inserts padding for alignment
+   1. `#pragma pack` can shrink but may slow access
+2. Bitfields pack into underlying type
+   1. layout implementation-defined across compilers
 
-### 6: 1:1s & Expectation Alignment [6:30](https://www.youtube.com/watch?v=-efamOOee2Q&t=390s)
+### 2: Pointers [0:31](https://www.youtube.com/watch?v=63zGtiv89bA&t=31s)
+### 2: Pointers [0:31](https://www.youtube.com/watch?v=63zGtiv89bA&t=31s)
 
-1. Bi-weekly 25-min, agenda shared 24h prior
-2. Three questions:
-   1. What should I keep?
-   2. Stop?
-   3. Start?
-3. Outcome: promo path clear, scope negotiated
+1. pointers = variables holding memory address of another variable
+   1. int *p declares int pointer named p
+   2. &a gives address of variable a
+   3. *p dereferences to value stored at that address
 
-### 2: English is most important programming language [1:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=71s)
-### English > Code [1:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=71s)
+### 3: Arrays are (not) pointers [0:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=56s)
+### Arrays are (not) pointers [0:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=56s)
 
-1. English is the most important programming language
-   1. value ≠ coding speed
-   2. value = justification at scale
-2. Design docs outrank code
-   1. harder to write
-   2. must convince 10 smart people first
-3. If you can’t explain logic in simple English, your C++ is worthless
+1. array = pointer to first element
+   1. pointer arithmetic auto-adjusts for element size
+   2. *(array + 1) == array[1]
+2. array[index] == *(array + index)
+   1. addition commutative → index[array] also valid
+   2. index[array] compiles & runs same as array[index]
+3. array decay: auto-convert array → pointer in certain contexts
+   1. arrays act like pointers but aren’t pointers
 
-### 3: Code is read way more than it is written [1:42](https://www.youtube.com/watch?v=-efamOOee2Q&t=102s)
-### Code readability at Google [1:42](https://www.youtube.com/watch?v=-efamOOee2Q&t=102s)
+### 4: The stack [2:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=120s)
+### The stack [2:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=120s)
 
-1. C++ readability certification
-   1. signals language expertise
-   2. requires passing rigorous reviews
-2. PR review process
-   1. 50+ comments typical
-   2. covers naming, memory safety, style
-3. Code is read 100× more than written
-4. Author now mentors others with same strict standards
+1. calling a function pushes a new stack frame
+   1. holds local vars + return address
+   2. frame popped on return → vars disappear
+2. returning pointer to stack var = bug
+   1. memory becomes invalid after pop
+   2. dereferencing = undefined behavior
 
-> ⭐ Painful reviews are the only path to mastery
+### 5: The heap [2:40](https://www.youtube.com/watch?v=63zGtiv89bA&t=160s)
+### 5: The heap [2:40](https://www.youtube.com/watch?v=63zGtiv89bA&t=160s)
 
-### 4: Strategic Curiosity ! [2:39](https://www.youtube.com/watch?v=-efamOOee2Q&t=159s)
-### Strategic Curiosity [2:39](https://www.youtube.com/watch?v=-efamOOee2Q&t=159s)
+1. heap = region for long-lived or large memory
+2. allocate with `malloc(bytes)` → returns pointer
+3. free with `free(ptr)`
+   1. forgetting → memory leak
+   2. process grows until crash
 
-1. Master strategic curiosity
-   1. Ask questions smartly, not everywhere
-   2. Nodding along when unclear is common
-2. Build safe learning zone
-   1. Find willing teachers at any level
-   2. Earn trust for silly questions in private
-3. Drain knowledge from safe circle
-   1. Gain confidence for big meetings
-   2. Show up prepared without needing to know everything
+> ⭐ heap memory must be manually managed; leaks crash the program
 
-### 5: Leading as a junior SWE [3:29](https://www.youtube.com/watch?v=-efamOOee2Q&t=209s)
-### 5: Leading as a junior SWE [3:29](https://www.youtube.com/watch?v=-efamOOee2Q&t=209s)
+### 6: Struct alignment [3:12](https://www.youtube.com/watch?v=63zGtiv89bA&t=192s)
+### Struct alignment [3:12](https://www.youtube.com/watch?v=63zGtiv89bA&t=192s)
 
-1. Early adoption > tenure for influence
-   1. dove into AI tools before team
-   2. shaped team's coding & productivity
+1. struct groups related vars (like a class)
+2. size ≠ sum of fields due to alignment
+   1. compiler pads so each field starts on size multiple
+   2. example: 1-byte char + 4-byte int + 1-byte char → 12 bytes
+3. reordering fields shrinks struct
+   1. placing chars together removes padding
+   2. same data now 8 bytes
+4. field order matters for memory
+   1. critical at million-instance scale
+   2. vital on constrained systems
 
-2. Value = fresh perspective, not years
-   1. AI integrated in code, design, on-call
-   2. learning pace with AI is unreal
+### 7: Crazy compiler optimizations [4:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=259s)
+### 7: Crazy compiler optimizations [4:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=259s)
 
-> ⭐ You can lead without senior title by being first to useful tech
+1. scalar evolution example
+   1. loop summing 1..n looks O(n)
+   2. compiler replaces it with triangular-number formula → O(1)
+2. not pattern-matching; deduced from first principles
+3. rule of thumb: write clear, good algorithms; micro-optimizations often unnecessary or harmful
 
-### 6: The Art of Context Switching [4:07](https://www.youtube.com/watch?v=-efamOOee2Q&t=247s)
-### 6: The Art of Context Switching [4:07](https://www.youtube.com/watch?v=-efamOOee2Q&t=247s)
+> ⭐ compiler can rewrite your loop into constant-time math without pattern matching
 
-1. hardest lesson: mental shift, not code
-2. burnout from Google job + YouTube side hustle
-3. clock-out ritual: job ends, YouTube begins
-   1. carry bugs into creative time → ruin both
-4. lifestyle switch: consumer → creator
-   1. cut Netflix/scroll time to zero
-   2. ideation, scripting, lighting demand energy & willpower
-5. traded quick dopamine of consumption for long-haul dopamine of building
-   1. sacrificed chill time for thumbnails, stories, ideas
-6. liberating feeling uploading self-built video outweighs watching others live
+### 8: Bitwise operations on signed types [5:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=319s)
+### 8: Bitwise on signed [5:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=319s)
 
-> ⭐ creating beats consuming every time
+1. negative ints use two's complement on all modern systems
+   1. MSB is negative weight, not 2^k
+2. pre-2023 C standard allowed other reps
+   1. bitwise ops on signed were implementation-defined
+3. C23 mandates two's complement
+   1. bitwise ops now fully defined
 
-### 7: The Power of Proximity [5:30](https://www.youtube.com/watch?v=-efamOOee2Q&t=330s)
-### 7: The Power of Proximity [5:30](https://www.youtube.com/watch?v=-efamOOee2Q&t=330s)
+### 9: Unsafe behaviour in the C standard library [5:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=356s)
+### Unsafe C std-lib functions [5:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=356s)
 
-1. Code is only half the battle; environment is the other half
-2. Smartest friends theory: you are the average of the five people around you
-   1. At Google this effect is amplified
-3. Bumping into college idol in micro kitchen
-   1. Had studied their notes and videos
-4. Being surrounded by smart people is intimidating
-5. Power of proximity: same room drags you up
-   1. Subconsciously absorb problem-solving patterns
-   2. Uncomfortable but fastest way to grow
+1. strcpy
+   1. no size check
+   2. buffer overflow if src > dst
+2. atoi
+   1. string → int
+   2. silent failure on bad input
 
-> ⭐ Proximity to top performers subconsciously accelerates your own growth
+> ⭐ classic examples of why C code needs manual safety checks
 
-### 8: The Art of Alignment [6:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=371s)
-### 8: The Art of Alignment [6:11](https://www.youtube.com/watch?v=-efamOOee2Q&t=371s)
+### 10: Digraphs and trigraphs [6:23](https://www.youtube.com/watch?v=63zGtiv89bA&t=383s)
+### 10: Digraphs and trigraphs [6:23](https://www.youtube.com/watch?v=63zGt89bA&t=383s)
 
-1. Most important weekly meeting is 1:1 with manager, not team standup
-2. Initially treated 1:1s as status updates
-   1. Blurted out whatever came to mind
-   2. No strategic use of time
+1. legacy feature from early C
+   1. keyboards lacked `{}` symbols
+2. digraphs: two-char replacements
+   1. `<:` → `{`
+   2. `:>` → `}`
+3. trigraphs: three-char sequences
+   1. start with `??`
+   2. need compiler flag today
 
-> ⭐ 1:1s are the highest-leverage alignment tool, not status dumps
+> ⭐ modern compilers warn on trigraphs by default
 
-### 9: The Importance of voicing your challenges [6:25](https://www.youtube.com/watch?v=-efamOOee2Q&t=385s)
-### Voicing Challenges [6:25](https://www.youtube.com/watch?v=-efamOOee2Q&t=385s)
+### 11: main is not _start [7:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=421s)
+### 11: main is not _start [7:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=421s)
 
-1. early belief: admitting stuck = looks weak
-2. manager wants to know blockers & complexity
-   1. shows you're tackling hard problems
-   2. gives ammo for promotion advocacy
-3. share wins **and** struggles
+1. main is not the true entry point
+   1. setup runs before main
+   2. command-line args prep
+   3. C stdlib init
+2. real entry point is _start
+   1. customizable
+   2. gives full control over init
+3. skipping stdlib useful for
+   1. minimal programs
+   2. embedded work
 
-> ⭐ if they don't know the complexity, they can't fight for you
+> ⭐ _start lets you drop lib C entirely
 
-### 10: Enjoying the Grind [7:19](https://www.youtube.com/watch?v=-efamOOee2Q&t=439s)
-### 10: Enjoying the Grind [7:19](https://www.youtube.com/watch?v=-efamOOee2Q&t=439s)
+### 12: A byte is not 8 bits [7:33](https://www.youtube.com/watch?v=63zGtiv89bA&t=453s)
+### 12: A byte is not 8 bits [7:33](https://www.youtube.com/watch?v=63zGtiv89bA&t=453s)
 
-1. never learned to push back
-2. never worked more than wanted
-3. struggle to say no bc enjoys grind
+1. char is 1 byte in C
+2. C standard never defines bits per byte
+   1. implementation-specific
+   2. can be 16, 24, 32 bits
+3. common in DSP / embedded chips tuned to word sizes
 
-> ⭐ enjoyment of work overrides typical burnout advice
+> ⭐ “8 bits per byte” is not guaranteed by the C standard
 
-### 11: Impact is far greater than Volume [7:33](https://www.youtube.com/watch?v=-efamOOee2Q&t=453s)
-### 11: Impact > Volume [7:33](https://www.youtube.com/watch?v=-efamOOee2Q&t=453s)
+### 13: Don't start a number with 0 [8:14](https://www.youtube.com/watch?v=63zGtiv89bA&t=494s)
+### Octal literals & leading zeroes [8:14](https://www.youtube.com/watch?v=63zGtiv89bA&t=494s)
 
-1. Impact beats volume
-   1. 10 low-value tickets ≠ 1 high-impact problem
-   2. One complex fix can define the quarter
+1. 010 == 8 in both C & JS
+   1. not just JS dynamic typing
+   2. literal prefix rule
 
-> ⭐ Channel high energy into the right work
+2. Prefixes for non-decimal bases
+   1. 0x → hexadecimal (0xFF = 255)
+   2. 0 → octal (base 8)
 
-### 12: An identity nobody can take away from you [7:56](https://www.youtube.com/watch?v=-efamOOee2Q&t=476s)
-### Identity beyond the job title [7:56](https://www.youtube.com/watch?v=-efamOOee2Q&t=476s)
+3. 010 parsed as octal 10 → 8 decimal
 
-1. broke collarbone → forced physical pause
-2. identity crisis when coding & sports gone
-   1. job title ≠ personality
-   2. who are you without company badge?
-3. build personal agency
-   1. employer can’t grant or revoke it
-   2. examples: channel, football, tennis, reading
-
-> ⭐ anchor yourself in pursuits no one can take away
-
-### 13: Managing the "Golden Handcuffs" [8:36](https://www.youtube.com/watch?v=-efamOOee2Q&t=516s)
-### 13: Managing the "Golden Handcuffs" [8:36](https://www.youtube.com/watch?v=-efamOOee2Q&t=516s)
-
-1. learned to manage "golden handcuffs"
-   1. salary inflation → spending inflation
-   2. stay grounded
-2. job exists to fuel life, not become life
-
-> ⭐ salary ≠ lifestyle autopilot
-
-### 14: 1 Year in ! [8:52](https://www.youtube.com/watch?v=-efamOOee2Q&t=532s)
-### 14: 1 Year In [8:52](https://www.youtube.com/watch?v=-efamOOee2Q&t=532s)
-
-1. one year in: don’t have it all figured out
-2. calmer & clearer on goals
-3. career is marathon, not sprint
-4. aiming for this role: keep going
-   1. great place to be
-   2. bring your own life through those doors
-
-> ⭐ Career clarity comes after the first year—pace yourself for the long run.
+> ⭐ A single leading 0 flips the base, not just the value
