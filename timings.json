@@ -46,5 +46,28 @@
       "summarization": 7.77,
       "total": 12.12
     }
+  },
+  {
+    "timestamp": "2026-03-16T15:35:19.975486",
+    "video": {
+      "title": "When open-sourcing your code goes wrong...",
+      "video_id": "wzzh7Not8XE",
+      "url": "https://www.youtube.com/watch?v=wzzh7Not8XE",
+      "uploader": "Fireship",
+      "duration": "6:38",
+      "duration_seconds": 398,
+      "chapters": 0,
+      "transcript_language": "English (auto-generated) (en)",
+      "word_count": 1325,
+      "fillers_removed": 9
+    },
+    "timings": {
+      "transcript_fetch": 4.28,
+      "filler_removal": 0.01,
+      "summarization": 2.9,
+      "notion_export": 34.51,
+      "total": 43.36
+    },
+    "notion_url": "https://www.notion.so/When-open-sourcing-your-code-goes-wrong-325d81dd80138168bd02ff3149491e54"
   }
 ]
