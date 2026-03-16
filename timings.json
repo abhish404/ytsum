@@ -69,5 +69,47 @@
       "total": 43.36
     },
     "notion_url": "https://www.notion.so/When-open-sourcing-your-code-goes-wrong-325d81dd80138168bd02ff3149491e54"
+  },
+  {
+    "timestamp": "2026-03-16T16:05:53.530942",
+    "video": {
+      "title": "How Multiplayer Game Servers save millions (Tick Rate Explained)",
+      "video_id": "NVIsNDFnvOU",
+      "url": "https://www.youtube.com/watch?v=NVIsNDFnvOU",
+      "uploader": "ByteMonk",
+      "duration": "8:26",
+      "duration_seconds": 506,
+      "chapters": 5,
+      "transcript_language": "English (auto-generated) (en)",
+      "word_count": 1436,
+      "fillers_removed": 21
+    },
+    "timings": {
+      "transcript_fetch": 3.46,
+      "filler_removal": 0.01,
+      "summarization": 3.07,
+      "total": 10.76
+    }
+  },
+  {
+    "timestamp": "2026-03-16T16:36:12.263660",
+    "video": {
+      "title": "How Multiplayer Game Servers save millions (Tick Rate Explained)",
+      "video_id": "NVIsNDFnvOU",
+      "url": "https://www.youtube.com/watch?v=NVIsNDFnvOU",
+      "uploader": "ByteMonk",
+      "duration": "8:26",
+      "duration_seconds": 506,
+      "chapters": 5,
+      "transcript_language": "English (auto-generated) (en)",
+      "word_count": 1436,
+      "fillers_removed": 21
+    },
+    "timings": {
+      "transcript_fetch": 2.55,
+      "filler_removal": 0.01,
+      "summarization": 2.78,
+      "total": 7.02
+    }
   }
 ]

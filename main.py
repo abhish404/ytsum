@@ -50,43 +50,40 @@ def main():
     timings = {}
     pipeline_start = time.time()
 
-    # Step 1: Fetch transcript
+    # Step 1: Fetch transcript + clean fillers (single disk write)
     print("═" * 50)
-    print("STEP 1: Fetching transcript...")
+    print("STEP 1: Fetching transcript + cleaning fillers...")
     print("═" * 50)
     t0 = time.time()
     markdown, metadata = build_markdown(url)
-    with open(transcript_path, "w", encoding="utf-8") as f:
-        f.write(markdown)
     timings["transcript_fetch"] = round(time.time() - t0, 2)
-    print(f"✅ Transcript saved ({len(markdown.split())} words) [{timings['transcript_fetch']}s]\n")
+    raw_words = len(markdown.split())
+    print(f"   📥 Transcript fetched ({raw_words} words) [{timings['transcript_fetch']}s]")
 
-    # Step 2: Remove fillers
-    print("═" * 50)
-    print("STEP 2: Removing filler words...")
-    print("═" * 50)
     t0 = time.time()
     cleaned = remove_fillers(markdown)
+    removed = raw_words - len(cleaned.split())
+    timings["filler_removal"] = round(time.time() - t0, 2)
+    print(f"   🧹 Fillers removed ({removed} words) [{timings['filler_removal']}s]")
+
     with open(transcript_path, "w", encoding="utf-8") as f:
         f.write(cleaned)
-    removed = len(markdown.split()) - len(cleaned.split())
-    timings["filler_removal"] = round(time.time() - t0, 2)
-    print(f"✅ Cleaned transcript ({removed} filler words removed) [{timings['filler_removal']}s]\n")
+    print(f"✅ Clean transcript saved to {transcript_path}\n")
 
-    # Step 3: Summarize
+    # Step 2: Summarize
     print("═" * 50)
-    print("STEP 3: Summarizing...")
+    print("STEP 2: Summarizing...")
     print("═" * 50)
     t0 = time.time()
     summarize(transcript_path)
     timings["summarization"] = round(time.time() - t0, 2)
 
-    # Step 4: Optional Notion export
+    # Step 3: Optional Notion export
     notion_url = None
     push = input("\n📤 Push to Notion? (y/n): ").strip().lower()
     if push in ("y", "yes"):
         print("═" * 50)
-        print("STEP 4: Exporting to Notion...")
+        print("STEP 3: Exporting to Notion...")
         print("═" * 50)
         t0 = time.time()
         video_title = metadata.get("title", "YouTube Summary")

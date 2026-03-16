@@ -14,6 +14,7 @@ Requirements:
 import sys
 import re
 import yt_dlp
+from concurrent.futures import ThreadPoolExecutor
 from youtube_transcript_api import YouTubeTranscriptApi
 
 
@@ -37,6 +38,20 @@ def get_video_info(url: str) -> dict:
         return info
 
 
+def fetch_transcript(video_id: str) -> tuple[list, str]:
+    """Fetch transcript via youtube-transcript-api. Returns (entries, language_str)."""
+    ytt = YouTubeTranscriptApi()
+    transcript_list = ytt.list(video_id)
+    available = list(transcript_list)
+    if not available:
+        print("❌ No transcripts available for this video.")
+        sys.exit(1)
+    chosen = available[0]
+    entries = list(chosen.fetch())
+    lang_str = f"{chosen.language} ({chosen.language_code})"
+    return entries, lang_str
+
+
 def format_timestamp(seconds: float) -> str:
     """Convert seconds to M:SS or H:MM:SS format."""
     total = int(seconds)
@@ -58,8 +73,16 @@ def build_markdown(url: str) -> tuple[str, dict]:
         sys.exit(1)
 
     print(f"📹 Video ID: {video_id}")
-    print("⏳ Fetching video info...")
-    info = get_video_info(url)
+    print("⏳ Fetching video info + transcript in parallel...")
+
+    # Run yt-dlp metadata and transcript API calls in parallel
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        info_future = pool.submit(get_video_info, url)
+        transcript_future = pool.submit(fetch_transcript, video_id)
+
+        info = info_future.result()
+        transcript, lang_str = transcript_future.result()
+
     chapters = info.get("chapters") or []
 
     metadata = {
@@ -69,22 +92,10 @@ def build_markdown(url: str) -> tuple[str, dict]:
         "duration_seconds": info.get("duration", 0),
         "uploader": info.get("uploader", "Unknown"),
         "chapter_count": len(chapters),
+        "transcript_language": lang_str,
     }
 
-    print("⏳ Fetching transcript...")
-    ytt = YouTubeTranscriptApi()
-
-    # Auto-detect available transcript language (supports any language)
-    transcript_list = ytt.list(video_id)
-    available = list(transcript_list)
-    if not available:
-        print("❌ No transcripts available for this video.")
-        sys.exit(1)
-
-    chosen = available[0]
-    print(f"🌐 Found transcript: {chosen.language} ({chosen.language_code})")
-    metadata["transcript_language"] = f"{chosen.language} ({chosen.language_code})"
-    transcript = list(chosen.fetch())
+    print(f"🌐 Found transcript: {lang_str}")
 
     yt_url = f"https://www.youtube.com/watch?v={video_id}"
     lines = []
