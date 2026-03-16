@@ -2,30 +2,180 @@
 """
 Notion Export — push summary.md to Notion as native blocks.
 
-Requires:
-    pip install notion-client
-    Save your Notion Integration Token in notion.txt
-    Share target Notion page(s) with the integration
+Uses OAuth for authentication:
+    First run  → browser opens, user authorizes, token saved
+    Later runs → uses saved token from Keys/notion_token.json
+
+Setup:
+    1. Create a Public integration at https://www.notion.so/my-integrations
+    2. Set redirect URI to http://localhost:3456/callback
+    3. Save client_id and client_secret in Keys/notion_oauth.json
 """
 
 import sys
+import os
 import re
+import json
+import base64
+import webbrowser
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from urllib.parse import urlparse, parse_qs
+import httpx
 from notion_client import Client
+
+OAUTH_CONFIG_PATH = "Keys/notion_oauth.json"
+TOKEN_PATH = "Keys/notion_token.json"
+REDIRECT_URI = "http://localhost:3456/callback"
+CALLBACK_PORT = 3456
+
+
+# ── OAuth flow ─────────────────────────────────────────────────────
+
+def _load_oauth_config() -> dict:
+    """Load OAuth client_id and client_secret from config file."""
+    if not os.path.exists(OAUTH_CONFIG_PATH):
+        print(f"❌ {OAUTH_CONFIG_PATH} not found.")
+        print("   Create it with your Notion Public Integration credentials:")
+        print('   {"client_id": "...", "client_secret": "..."}')
+        print("   Get these at: https://www.notion.so/my-integrations")
+        sys.exit(1)
+    with open(OAUTH_CONFIG_PATH, "r") as f:
+        config = json.load(f)
+    if not config.get("client_id") or not config.get("client_secret"):
+        print(f"❌ {OAUTH_CONFIG_PATH} is missing client_id or client_secret.")
+        sys.exit(1)
+    return config
+
+
+def _save_token(token_data: dict) -> None:
+    """Save OAuth token data to disk."""
+    os.makedirs(os.path.dirname(TOKEN_PATH), exist_ok=True)
+    with open(TOKEN_PATH, "w") as f:
+        json.dump(token_data, f, indent=2)
+
+
+def _load_saved_token() -> str | None:
+    """Load previously saved access token, if it exists."""
+    if os.path.exists(TOKEN_PATH):
+        with open(TOKEN_PATH, "r") as f:
+            data = json.load(f)
+        token = data.get("access_token")
+        if token:
+            return token
+    return None
+
+
+class _OAuthCallbackHandler(BaseHTTPRequestHandler):
+    """Tiny HTTP handler that captures the OAuth callback code."""
+    auth_code = None
+
+    def do_GET(self):
+        parsed = urlparse(self.path)
+        params = parse_qs(parsed.query)
+        if "code" in params:
+            _OAuthCallbackHandler.auth_code = params["code"][0]
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.end_headers()
+            self.wfile.write(
+                b"<html><body style='font-family:sans-serif;text-align:center;padding:60px'>"
+                b"<h1>&#10004; Notion connected!</h1>"
+                b"<p>You can close this tab and return to the terminal.</p>"
+                b"</body></html>"
+            )
+        else:
+            error = params.get("error", ["unknown"])[0]
+            self.send_response(400)
+            self.send_header("Content-Type", "text/html")
+            self.end_headers()
+            self.wfile.write(f"<html><body><h1>Error: {error}</h1></body></html>".encode())
+
+    def log_message(self, format, *args):
+        pass  # Suppress server logs
+
+
+def _run_oauth_flow() -> str:
+    """Run the full OAuth flow: browser → callback → token exchange."""
+    config = _load_oauth_config()
+    client_id = config["client_id"]
+    client_secret = config["client_secret"]
+
+    # Build authorization URL
+    auth_url = (
+        f"https://api.notion.com/v1/oauth/authorize"
+        f"?owner=user"
+        f"&client_id={client_id}"
+        f"&redirect_uri={REDIRECT_URI}"
+        f"&response_type=code"
+    )
+
+    # Start local callback server
+    server = HTTPServer(("localhost", CALLBACK_PORT), _OAuthCallbackHandler)
+    server_thread = threading.Thread(target=server.handle_request, daemon=True)
+    server_thread.start()
+
+    # Open browser
+    print(f"🌐 Opening browser for Notion authorization...")
+    print(f"   (If it doesn't open, visit: {auth_url})")
+    webbrowser.open(auth_url)
+
+    # Wait for callback
+    print("⏳ Waiting for authorization...")
+    server_thread.join(timeout=120)
+    server.server_close()
+
+    code = _OAuthCallbackHandler.auth_code
+    if not code:
+        print("❌ Authorization timed out or was denied.")
+        sys.exit(1)
+
+    print("✅ Authorization code received — exchanging for token...")
+
+    # Exchange code for access token
+    credentials = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
+    response = httpx.post(
+        "https://api.notion.com/v1/oauth/token",
+        headers={
+            "Authorization": f"Basic {credentials}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": REDIRECT_URI,
+        },
+    )
+
+    if response.status_code != 200:
+        print(f"❌ Token exchange failed: {response.text}")
+        sys.exit(1)
+
+    data = response.json()
+    access_token = data.get("access_token")
+    if not access_token:
+        print(f"❌ No access_token in response: {data}")
+        sys.exit(1)
+
+    # Save token for future runs
+    token_data = {
+        "access_token": access_token,
+        "bot_id": data.get("bot_id", ""),
+        "workspace_name": data.get("workspace_name", ""),
+        "workspace_id": data.get("workspace_id", ""),
+    }
+    _save_token(token_data)
+    print(f"✅ Connected to workspace: {token_data['workspace_name']}")
+    return access_token
 
 
 def load_notion_token() -> str:
-    """Load Notion integration token from notion.txt."""
-    try:
-        with open("Keys/notion.txt", "r") as f:
-            token = f.read().strip()
-    except FileNotFoundError:
-        print("❌ notion.txt not found — create it and paste your Notion Integration Token.")
-        print("   Get one at: https://www.notion.so/my-integrations")
-        sys.exit(1)
-    if not token:
-        print("❌ notion.txt is empty — paste your Integration Token inside it.")
-        sys.exit(1)
-    return token
+    """Load saved token or run OAuth flow if needed."""
+    token = _load_saved_token()
+    if token:
+        print("🔑 Using saved Notion token")
+        return token
+    return _run_oauth_flow()
 
 
 # ── Rich text helpers ──────────────────────────────────────────────
