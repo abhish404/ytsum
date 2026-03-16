@@ -20,6 +20,7 @@ from datetime import datetime
 from transcript import build_markdown
 from filler import remove_fillers
 from summarize import summarize
+from notion_export import export_summary
 
 TIMINGS_FILE = "timings.json"
 
@@ -80,6 +81,18 @@ def main():
     summarize(transcript_path)
     timings["summarization"] = round(time.time() - t0, 2)
 
+    # Step 4: Optional Notion export
+    notion_url = None
+    push = input("\n📤 Push to Notion? (y/n): ").strip().lower()
+    if push in ("y", "yes"):
+        print("═" * 50)
+        print("STEP 4: Exporting to Notion...")
+        print("═" * 50)
+        t0 = time.time()
+        video_title = metadata.get("title", "YouTube Summary")
+        notion_url = export_summary(video_title)
+        timings["notion_export"] = round(time.time() - t0, 2)
+
     timings["total"] = round(time.time() - pipeline_start, 2)
 
     # Build the full log entry
@@ -104,6 +117,8 @@ def main():
         },
         "timings": timings,
     }
+    if notion_url:
+        entry["notion_url"] = notion_url
 
     # Append to existing log
     all_entries = load_timings()

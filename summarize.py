@@ -31,7 +31,7 @@ def load_prompt(filename: str) -> str:
 
 def load_api_key() -> str:
     try:
-        with open("groq.txt", "r") as f:
+        with open("Keys/groq.txt", "r") as f:
             api_key = f.read().strip()
     except FileNotFoundError:
         print("❌ groq.txt not found — create it and paste your API key inside.")
@@ -160,8 +160,8 @@ def summarize(transcript_path: str) -> None:
         transcript = f.read()
 
     client = Groq(api_key=api_key)
-    chapter_prompt = load_prompt("ch_prompt.txt")
-    tldr_prompt = load_prompt("tldr_prompt.txt")
+    chapter_prompt = load_prompt("Prompts/ch_prompt.txt")
+    tldr_prompt = load_prompt("Prompts/tldr_prompt.txt")
 
     chapters = parse_chapters(transcript)
 
