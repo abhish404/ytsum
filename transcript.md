@@ -1,106 +1,89 @@
-### 1: Intro [0:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=0s)
-
-[0:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=0s) C was one of the first high-level languages to gain widespread adoption. It's since become the foundation for modern operating systems, databases, and other languages. Yet, because of its
-[0:10](https://www.youtube.com/watch?v=63zGtiv89bA&t=10s) age, it has a lot of surprising behaviors, many of which have been propagated to other programming languages. One of these is sometimes given as an example of why JavaScript is
-[0:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=19s) weird, even though the main source of confusion has its origins in C. Today, I've compiled a list of my favorite facts about C. We'll start with
-[0:27](https://www.youtube.com/watch?v=63zGtiv89bA&t=27s) the things you really ought to know and then we'll get further down into the more obscure. For those unfamiliar,
-
-### 2: Pointers [0:31](https://www.youtube.com/watch?v=63zGtiv89bA&t=31s)
-
-[0:32](https://www.youtube.com/watch?v=63zGtiv89bA&t=32s) let's quickly review one of C's most essential concepts, pointers. At their core, pointers are just variables that point to the location of another variable in memory. The syntax can be a
-[0:42](https://www.youtube.com/watch?v=63zGtiv89bA&t=42s) little confusing at first. If you write int star p, you're declaring an integer pointer called p. amperand a gives you the memory address of variable a. Then
-[0:53](https://www.youtube.com/watch?v=63zGtiv89bA&t=53s) star p gives you the value that p points to. One of the first times pointers
-
-### 3: Arrays are (not) pointers [0:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=56s)
-
-[0:58](https://www.youtube.com/watch?v=63zGtiv89bA&t=58s) really clicked for me was when I learned that arrays are but not exactly pointers. An array is essentially just a pointer to the first
-[1:06](https://www.youtube.com/watch?v=63zGtiv89bA&t=66s) element in that array. This is where pointer arithmetic comes in. If you add one to your pointer, C gives you the address of the second element in that array, accounting for the size of each
-[1:16](https://www.youtube.com/watch?v=63zGtiv89bA&t=76s) element automatically. In this way, dreferencing array + one is equivalent to indexing your array at index 1. And the same is true in general.
-[1:24](https://www.youtube.com/watch?v=63zGtiv89bA&t=84s) Dreferencing array plus index is equivalent to getting the value of your array at that index. Now, here's where it gets interesting. If array at index
-[1:32](https://www.youtube.com/watch?v=63zGtiv89bA&t=92s) is equivalent to dreferencing array plus index, and addition is commutative, then this must be equivalent to swapping index and the array. And indeed, it is.
-[1:42](https://www.youtube.com/watch?v=63zGtiv89bA&t=102s) You can write index array of two in C and it will compile and work exactly the same as getting index 2 of array. It's a fun party trick. arrays
-[1:51](https://www.youtube.com/watch?v=63zGtiv89bA&t=111s) act pointers, but that doesn't mean that arrays are pointers. What we're observing here is called array decay. The automatic conversion of arrays to pointers in certain contexts. Switching
-
-### 4: The stack [2:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=120s)
-
-[2:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=121s) gears, what happens when you call a function? , your program maintains something called the stack. When you call a function, a new stack
-[2:09](https://www.youtube.com/watch?v=63zGtiv89bA&t=129s) frame gets pushed onto the stack. This frame contains all the local variables for that function as as information about where to return to when the function finishes. When the function
-[2:18](https://www.youtube.com/watch?v=63zGtiv89bA&t=138s) returns, the stack frame gets popped off and all those local variables are gone. This leads to a common mistake, returning a pointer to a stack variable. Let's say you have a function that
-[2:27](https://www.youtube.com/watch?v=63zGtiv89bA&t=147s) creates an integer, stores it in a local variable, and then returns a pointer to that variable. Once the function returns, that memory is no longer valid.
-[2:35](https://www.youtube.com/watch?v=63zGtiv89bA&t=155s) Your pointer could now be pointing to garbage, and using it counts as undefined behavior. The alternative to
-
-### 5: The heap [2:40](https://www.youtube.com/watch?v=63zGtiv89bA&t=160s)
-
-[2:41](https://www.youtube.com/watch?v=63zGtiv89bA&t=161s) the stack is the heap. If you need memory that outlives a function call or if you need a lot of memory, you'll probably be using the heap. The heap is a region of memory that you can allocate
-[2:50](https://www.youtube.com/watch?v=63zGtiv89bA&t=170s) and free manually. To allocate memory on the heap, you just use malo, which stands for memory allocate, and you tell it how many bytes you need, and it gives you a pointer to that memory. When
-[3:00](https://www.youtube.com/watch?v=63zGtiv89bA&t=180s) you're done with it, you can call free to give it back. If you forget to free memory that you've allocated, you have what's called a memory leak. your program will keep using more and more
-[3:08](https://www.youtube.com/watch?v=63zGtiv89bA&t=188s) memory until it eventually slows down or cracks.
-
-### 6: Struct alignment [3:12](https://www.youtube.com/watch?v=63zGtiv89bA&t=192s)
-
-[3:12](https://www.youtube.com/watch?v=63zGtiv89bA&t=192s) Next, let's talk about strrus. A strruct is just a way to group related variables together. It's a class in an object-oriented language. Now, here's
-[3:20](https://www.youtube.com/watch?v=63zGtiv89bA&t=200s) a question. How much memory does this strct take up? You might think that a car is one byte and an int is four bytes. , that's 1 + 4 + 1 is 6 bytes
-[3:29](https://www.youtube.com/watch?v=63zGtiv89bA&t=209s) total, right? , not quite. On most systems, this strct will take up 12 bytes. Why? Because of something called strruct alignment, modern
-[3:38](https://www.youtube.com/watch?v=63zGtiv89bA&t=218s) processors are optimized to read memory in chunks, usually four or eight bytes at a time. To make this efficient, the compiler adds padding to align fields to
-[3:47](https://www.youtube.com/watch?v=63zGtiv89bA&t=227s) addresses that are multiples of their size. After that first character, the compiler adds three bytes of padding that the int starts on a four byte boundary. Then after the second car, it
-[3:57](https://www.youtube.com/watch?v=63zGtiv89bA&t=237s) adds three more bytes. the entire struck size is a multiple of four. But if we rearrange the fields this, now it only takes eight bytes. The two
-[4:05](https://www.youtube.com/watch?v=63zGtiv89bA&t=245s) car fields can sit next to each other without wasting space. The takeaway is that the field order matters when you're defining strcts. Grouping smaller types together can save significant memory,
-[4:14](https://www.youtube.com/watch?v=63zGtiv89bA&t=254s) especially if you're creating millions of them or are programming for a system with heavy memory limitations. Next,
-
-### 7: Crazy compiler optimizations [4:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=259s)
-
-[4:20](https://www.youtube.com/watch?v=63zGtiv89bA&t=260s) let's talk about the compiler a bit. In particular, its gnarly optimizations. A really cool example is something called scalar evolution. Let's say you write a
-[4:29](https://www.youtube.com/watch?v=63zGtiv89bA&t=269s) simple loop to calculate the sum of integers from 1 to n. This code has O of N time complexity. If you double n, it should take twice as long to run. But if
-[4:37](https://www.youtube.com/watch?v=63zGtiv89bA&t=277s) you compile this with even basic optimizations, the compiler knows that it can replace the entire loop with the formula for triangular numbers. Your code is now O of one. And apparently
-[4:47](https://www.youtube.com/watch?v=63zGtiv89bA&t=287s) it's not doing this by pattern matching. It is figuring it out from first principles. Now, this is a pretty extreme example of a compiler optimization, but in general, the rule
-[4:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=296s) of thumb is that you should focus on writing good algorithms in readable ways. Minor changes in the name of optimization that obfuscate your code are often not necessary and can even
-[5:05](https://www.youtube.com/watch?v=63zGtiv89bA&t=305s) hurt performance if you're not careful. Now we're getting a bit deeper in the iceberg towards things that might surprise you even if you have a bit of experience in C. By the way, if you're
-[5:14](https://www.youtube.com/watch?v=63zGtiv89bA&t=314s) enjoying the video, please let me know by liking it or subscribing. It really helps me out. C lets you operate on the
-
-### 8: Bitwise operations on signed types [5:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=319s)
-
-[5:20](https://www.youtube.com/watch?v=63zGtiv89bA&t=320s) individual bits of data with bitwise operations. What happens if you do this with a negative number? To answer that, we first need to talk about how negative numbers are stored. On virtually all
-[5:29](https://www.youtube.com/watch?v=63zGtiv89bA&t=329s) modern systems, negative integers are represented using two's complement. Two's complement works a lot binary, except instead of the most significant bit being a power of two,
-[5:38](https://www.youtube.com/watch?v=63zGtiv89bA&t=338s) it's the negative of its typical value. Before 2023, the C standard never required two's complement representation for signed integers. , Bitwise
-[5:47](https://www.youtube.com/watch?v=63zGtiv89bA&t=347s) operations on signed integers were implementation specific. As of C23, two's complement is now required. And these operations are finally 
-
-### 9: Unsafe behaviour in the C standard library [5:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=356s)
-
-[5:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=356s) defined. Something you should definitely know. The C standard library contains unsafe functions. Take stir copy for example. It copies a string from one location to another, but it doesn't
-[6:05](https://www.youtube.com/watch?v=63zGtiv89bA&t=365s) check if the destination buffer is large enough. If the source string is longer than the destination buffer, you have a buffer overflow, which can be a big problem. Another one is A2I, which
-[6:15](https://www.youtube.com/watch?v=63zGtiv89bA&t=375s) converts a string to an integer. The problem is it has no way to report errors. It will try to parse the string you give it and will fail silently.
-
-### 10: Digraphs and trigraphs [6:23](https://www.youtube.com/watch?v=63zGtiv89bA&t=383s)
-
-[6:23](https://www.youtube.com/watch?v=63zGtiv89bA&t=383s) Now, here's something that exists purely because C is old, but is totally useless today. Back in the day, not all keyboards had characters the curly
-[6:31](https://www.youtube.com/watch?v=63zGtiv89bA&t=391s) brackets. , the C standard introduced diagraphs and trigraphs as alternative ways to write these characters. Diagraphs are two character sequences
-[6:39](https://www.youtube.com/watch?v=63zGtiv89bA&t=399s) that represent single characters. For example, less than percent and percent greater than can be used instead of the curly brackets. This means that this
-[6:48](https://www.youtube.com/watch?v=63zGtiv89bA&t=408s) code is completely valid C. We can make it even uglier with triraphphs which use three character sequences starting with two question marks. These days
-[6:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=416s) triigraphs will give you a compiler warning by default and need to be enabled with a compiler flag. Now
-
-### 11: main is not _start [7:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=421s)
-
-[7:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=421s) something that's fun to know but a little more useful is that main is not the true entry point of your program. Before main runs, the program has to do a bunch of setup work. It needs to
-[7:10](https://www.youtube.com/watch?v=63zGtiv89bA&t=430s) prepare the command line arguments, initialize the C standard library, and on. This all happens in a function called underscore start. You can customize your start function, giving
-[7:19](https://www.youtube.com/watch?v=63zGtiv89bA&t=439s) you complete control over the program's initialization. Sometimes this is necessary if you want to be free from lib C. For example, if you're writing a very minimal program or working in an
-[7:28](https://www.youtube.com/watch?v=63zGtiv89bA&t=448s) embedded environment, you might want to skip all of the standard library setup and do it yourself. Now, this fact is
-
-### 12: A byte is not 8 bits [7:33](https://www.youtube.com/watch?v=63zGtiv89bA&t=453s)
-
-[7:34](https://www.youtube.com/watch?v=63zGtiv89bA&t=454s) one of my favorites because it sounds pedantic, but can be important to know. One of the most common data types in C is the character car. You may
-[7:43](https://www.youtube.com/watch?v=63zGtiv89bA&t=463s) know that a car is one bite and you probably also know that one bite is eight bits. But , while the C standard does guarantee that a car is
-[7:52](https://www.youtube.com/watch?v=63zGtiv89bA&t=472s) one bite, it says nothing about how many bits are in a bite. And because it's never directly defined, it's technically implementation specific. There are
-[8:01](https://www.youtube.com/watch?v=63zGtiv89bA&t=481s) architectures where the number of bits in a bite can be 16, 32, or even 24. You usually see this in digital signal processors or embedded systems where the
-[8:11](https://www.youtube.com/watch?v=63zGtiv89bA&t=491s) hardware is designed to work with specific word sizes. . And finally,
-
-### 13: Don't start a number with 0 [8:14](https://www.youtube.com/watch?v=63zGtiv89bA&t=494s)
-
-[8:16](https://www.youtube.com/watch?v=63zGtiv89bA&t=496s) we've reached the fact that inspired this video. You've probably seen those posts on the internet making fun of JavaScript's dynamic typing. One I've seen showed 010 double equals in
-[8:26](https://www.youtube.com/watch?v=63zGtiv89bA&t=506s) quotations 8 as being true, commenting on how weird JavaScript is. But aside from the dynamic typing, this is also true in C. what's going on? Often you
-[8:36](https://www.youtube.com/watch?v=63zGtiv89bA&t=516s) want to give numbers in specific base representations. You can do this using what's called a literal prefix. The most common is 0x for hexodimal. For example,
-[8:46](https://www.youtube.com/watch?v=63zGtiv89bA&t=526s) 0x FF is 255. , we can also write numbers in octal, which is base 8. But for whatever reason, it was decided that the literal prefix for octal should just
-[8:56](https://www.youtube.com/watch?v=63zGtiv89bA&t=536s) be a 0. when you have 0 1 0, it's interpreting that as 1 0 in base 8, which is equal to 8. The same literal
-[9:05](https://www.youtube.com/watch?v=63zGtiv89bA&t=545s) prefix of just the zero has been carried over into JavaScript. Alrighty. , that's it for this deep dive into the C iceberg. Hopefully, you were able to
-[9:13](https://www.youtube.com/watch?v=63zGtiv89bA&t=553s) learn something new. And , of course, there is much more that I could have covered. , if you have any fun facts about C, please leave them in the comments. If you made it this far into the video, you might be interested in
-[9:22](https://www.youtube.com/watch?v=63zGtiv89bA&t=562s) this other video where I talk about easy args, which is a minimal argument parsing library in C. YouTube's recommendation algorithm thinks that you'll this other video on the
-[9:30](https://www.youtube.com/watch?v=63zGtiv89bA&t=570s) screen. , make of that what you will. And if you want to see more content this in the future, feel free to subscribe.
+[0:01](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=1s) If you want to be a successful entrepreneur, you just have to do the unsexy manual work and get it done. [music] One of my mentors once said, "The road to hell is paved with
+[0:10](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=10s) premature optimization." Sometimes it's just solving problems that no one else really wants to solve. I've assembled a roster in my head of
+[0:18](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=18s) the allstars that I've worked with across my 10 year career now, 11 year, I guess. And to have the resources to go
+[0:26](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=26s) get these people and bring them onto the team and assemble the Avengers is I'm in the current I think peak of my career far. much fun. Get to go speak at
+[0:37](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=37s) UAB. Hi, my name is [music] Elliot. Very good to meet you all. Thank you much for having me. At a startup, everything is
+[0:46](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=46s) higher stakes and you are you are closer to the customer. You are closer to you care about every dollar more than you do at a bigger, more traditional company. I'm just going to tell you my
+[0:55](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=55s) story and I prefer two-sided conversations more than a one-way one. , I want to leave time for questions, whatever you guys are curious about. I am from Birmingham. I was born
+[1:05](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=65s) here. I went to Lee University. Lee University is a small private Christian liberal arts school in Tennessee. And I studied music. I was going to be a producer. That was my ambition. My best
+[1:15](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=75s) friend from Mountain Brook, this guy Charlie, calls me and he's , "Hey, I saw a Craigslist ad for this delivery job. I went in and interviewed and I and I got a job in the office. It's this
+[1:24](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=84s) startup called Shipped. , the startup is starting. The CEO is a prodigy entrepreneur. He dropped out of high school at 16, [music] sold his first business at 18, sold his second
+[1:32](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=92s) business at 21. His name's Bill. I think you'd him. You should interview here. And I was , , that could be my summer job before I moved to Nashville. , I interview at Shipped.
+[1:42](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=102s) Mind you, there are four people employed at this company. And they called me back the next day and Bill said, you did not get the job. And I was , wow. And he was joking. He was , "You
+[1:50](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=110s) didn't get the customer service job, but we want to create a position for you called head of city launch." [music] And I was , "Sweet. What does that mean?" I personally was responsible
+[1:59](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=119s) for the team that expanded to 63 cities in [music] 2 years. I was on the road a lot. But it was a ton of fun. As you can imagine, that is one of the through lines of startups. Regardless of what
+[2:08](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=128s) industry you're in or what sector, what market you're in, if you want to be a successful entrepreneur, you just [music] have to do the unsexy manual work and
+[2:17](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=137s) get it done. It's very tempting, especially now in the age of vibe coding and AI, to try to automate things prematurely. [music] One of my mentors once said, "The road to hell is paved
+[2:25](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=145s) with premature optimization." Being an entrepreneur is about doing what other people are not willing to do. And that doesn't necessarily mean building the best pitch deck or [music] pitching the
+[2:34](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=154s) biggest investors. Sometimes it's just solving problems that no one else really wants to solve. And I fell totally in love with the idea of leveraging myself and my team with software to do
+[2:43](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=163s) way more than we could without it. , I [music] had already fallen in love with startups. I had already said we'll do the music thing later. This is too much [music] fun. And then when I discovered
+[2:51](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=171s) software engineering, it was game over. Shipped was an incredible [music] ride. We sold to Target for 550 million in 2 and 1/2 years. And as an early
+[3:00](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=180s) employee, we had stock options. [music] I took some of the money that we made when we sold and started link. And I'll tell you [music] about that before I get into link and where we are
+[3:09](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=189s) now. Does anybody have questions? Yes. Do you think it's necessary for entrepreneurs to learn how to code yourself? I don't think anything is
+[3:17](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=197s) necessary to be an entrepreneur. , the definition of entrepreneur is very broad. There are totally non-technical entrepreneurs. You can have a service-based business and be an entrepreneur. And , if you want to be if you want to start a tech company,
+[3:26](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=206s) learning the fundamentals or the first principles, I think, is pretty important. Whether or not you become competent enough to go start and build your own app from scratch is not
+[3:34](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=214s) necessarily what I'm saying, but enough to say to have a sense of this person knows what they're talking about and is good and this person is not [music] enough to hone your own judgment,
+[3:42](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=222s) I'd say. , it's 2019. My co-founders and I, we were bored at Shift and we had this side hustle called Sidekick. And Sidekick was, have you ever used 
+[3:51](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=231s) sneaker buying bots? Is that [music] still a thing? Limited edition sneakers. They got use a bot to buy them. We had an Instagram growth bot called Sidekick. And we would sell it to small
+[4:00](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=240s) businesses. Me and [music] my actual two co-founders worked on this before Link. And this is 2019, right when Apple released the ability to scan a QR code
+[4:08](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=248s) with a native camera. They used to have to download an app to scan QR codes and it was no one did it. And we were , what if we put the checkout link and a little contact exchange
+[4:18](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=258s) [music] in this, , behind this QR code and we could just point people to that and they could buy it, get our info, [music] all at the same time. And what happened was people at shipped, our
+[4:28](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=268s) co-workers, and then our friends, then family, then people we didn't know [music] kept being , "Hey, how do I get a digital business card? I want one of those digital business cards." And it was just this QR code in your Apple
+[4:37](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=277s) wallet. And we were , "Yeah, that yeah, that's what this is, a digital business card. We meant to do this for sure." Pretty [music] scary, right? We had two employees at that point. , there's five of us in a room. We raised
+[4:46](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=286s) a million bucks. , we're sitting on money. Thank God. We'd raised money right before Birmingham closed down. And great, we have a product that people are supposed to use for in-person networking
+[4:55](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=295s) and the whole world shut down, especially inerson networking. And my co-founder had the idea that if we could put [music] the digital QR code onto a physical card, it would be easier for
+[5:04](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=304s) people to adopt, right? right? people were used to paper business cards and we had this digital thing, but if we merged the two and put a QR code and a physical card and oh this NFC
+[5:14](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=314s) technology could be a nice complement to the QR code, , [music] you could tap it to someone's phone and then instead of them having to scan it, that felt cool. and we went on Alibaba.
+[5:22](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=322s) [music] We ordered these black PVC cards with NFC chips, NFC chips in them and our QR codes on them and we [music] got 2,000 of them to our apartment in in
+[5:33](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=333s) Jimson Flats and we put them on Facebook and we started selling physical cards. Believe it or not, it [music] blew up and the whole thing was just we got a
+[5:42](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=342s) little bit of signal of something that people wanted and something that worked and we just we doubled down. That's entrepreneurship in a nutshell. Doubled down. People were , "Hey, I want custom designs printed on these
+[5:52](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=352s) cards." We were , "." And then we sold that for three times the price of the standard card. And started making bank. And then we were , ", what if on the digital side of
+[6:01](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=361s) things, we sold a subscription because subscriptions are the best way to make money to customize the digital aspects of your page, right? And scaling software is infinitely cheaper than
+[6:10](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=370s) scaling physical hardware." And people bought it. And we called it Link Pro. And we sold it for $5 a month. And we were nervous to charge anything, but people bought it. That was 2020 and
+[6:19](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=379s) 2021, , customers kept saying, "Hey, how do I standardize the physical branding of the card, the digital branding of the profiles, and maybe put
+[6:28](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=388s) a an integration or two on the back end that when my team is meeting leads or meeting customers, we could sync all that to our CRM Salesforce or HubSpot." And we heard that enough
+[6:38](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=398s) and we were , we should bundle this up and sell it to businesses and call it link for teams and [music] we did. , a lot of businesses are solutions looking for a problem. A lot of the startup
+[6:47](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=407s) advice is find a problem that no one else is solving. And that's pretty hard to do. You have to have both. You can't be totally problem oriented. You
+[6:55](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=415s) know, Henry Ford said if I'd asked people what they wanted, they would have said a faster horse. , you can't totally rely on talking to people about the problems and [music] get their advice on how they think you should
+[7:04](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=424s) solve them because most people aren't dreamers and builders and entrepreneurs. But on the other hand, you can't just go build stuff and hope people want it. you can but I think generally having enough agency and creativity to
+[7:15](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=435s) create something some solution and enough wherewithal to know directionally what kinds of problems that thing could solve is a healthy mix.
+[7:25](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=445s) When we started the QR code thing we didn't even we didn't really conceptualized it as a digital business card per se. People started calling it that and we we shifted
+[7:34](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=454s) with where the market was pulling us. That's been our whole story. I was , "All right, if we give sales people a phone number that we controlled, AI powered, but behind the scenes, you made
+[7:42](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=462s) calls to and from that number, we could take notes on the phone call for you, put those notes into your CRM." Where it started was when you met leads through Link's digital business cards, we could
+[7:51](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=471s) text those leads automatically for you. And to the end user, they just it looks your phone number. They don't know that's your work number versus your personal. And we thought about it for a
+[7:59](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=479s) while. We talked about it for a while. I'm in the hospital with my wife. Our second baby has just been born. and my co-founder and CTO calls me and he's , "Hey, we can do this thing for the
+[8:10](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=490s) digital business card or we can we could try this phone thing that we've been talking about." And it was a two-cond decision. I was , "Let's do the phone thing. , go build a prototype." We built it. We launched it.
+[8:19](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=499s) And the people who signed up for that product very creatively called Link Phone used 10 times more than the power user of the digital business card. And
+[8:28](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=508s) they paid us $149 a year instead of $99 a year. We were , "Game on." And then customers started asking for something else. Most of our customers
+[8:36](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=516s) had iPhones. Most of their customers had iPhones. And the way that we built Link Phone, it sent green text. It sent SMS text. [music] And they were , "We want to send blue text." And I was ,
+[8:45](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=525s) ", that's too bad. There's no blue text API. Most people build phone technology on top of a company called Twilio. And the only way to send messages is [music] to make them green."
+[8:54](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=534s) And I heard it enough. And I went to lunch with Bill Smith and he was , "I really want to use your AI phone thing." But he's , "I will not send green text." And I was , "I get it.
+[9:02](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=542s) this is a real thing. And I went to the team and I was , look, I don't know how we would do it, but if we could solve and if we could send blue text as part of link phone, that'd be really
+[9:10](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=550s) valuable. And we turned on this product called link blue for our sales team. [music] And what would happen is you'd come to our site, you'd fill out a calendar invitation, and instead of getting green text or
+[9:19](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=559s) emails reminding you about the meeting, you would get a blue text from Hunter or from Mason on our team, and it looked someone just typed a real text to
+[9:28](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=568s) you and said, "Hey, I'm excited to meet with you tomorrow. Are you still good for that time?" The percentage of people who attended our sales demos jumped 50% in a matter of weeks. Remember, we started at 60 a year and then we went to
+[9:37](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=577s) 99 a year and then 149 a year and then we got crazy and we were , "Link Blue, this product is $1,048 [music] a year and it sold hotcakes." We
+[9:47](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=587s) doubled our ARR from the previous four years in 8 [music] months last year when we launched Link Blue. , your willingness to solve problems that other
+[9:56](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=596s) people are not because they're hard or messy [music] or unsexy or complicated is usually directly proportional to the value you create and therefore what
+[10:06](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=606s) people are going to pay you for that solution. And we had this company come through our lead form called the interaction company of California and they were , , backed by some top tier investors and they were
+[10:16](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=616s) , "Hey, we don't have a CRM. We don't care about the sales stuff. [music] Can we plug into your API?" We were , ", maybe under the hood,
+[10:24](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=624s) the API is what powers [music] the sending iMessage from your CRM." And we were going to polish that up a little bit and sell that to this company. And we did sold it to them
+[10:32](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=632s) for the same price we sold, , normal [music] customers. And it went crazy. They built an AI that texted and seemed more human than any other
+[10:41](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=641s) conversational AI before them. And they went [music] super viral. What caught my attention most, we were all of a sudden an infrastructure company. We were expanding and scaling with [music] our
+[10:50](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=650s) customers scale, not with their hiring. And if you can build [music] an infrastructure type of company, if you
+[10:59](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=659s) can be the underbelly of the business that powers the whole [music] thing, it's a really, really valuable business, way better than a SAS sales tool plugin. It's hard to start there. Most
+[11:09](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=669s) companies iterate their way there. But all [music] of a sudden, we found ourselves in a really cool spot. Here's the crux of entrepreneurship in a nutshell. the sales type customers
+[11:17](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=677s) represented [music] of the new revenue 90% of our new revenue. But when we saw Poke [music] come through and one or two other infrastructure customers is what we call
+[11:26](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=686s) them who were building on top of our API. It was much a stickier use case and a higher value proposition to [music] those customers that I was ,
+[11:34](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=694s) we're pivoting the whole company and we're going to turn off this thing that's working really, really in order to focus entirely and myopically on the thing that's working
+[11:43](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=703s) has a kernel of a promise of working [music] even better. And we did. Entrepreneurship is just normal life, but the peaks and valleys
+[11:51](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=711s) are super amplified. The lows are really low, the highs are really high. [music] I wouldn't rather be doing anything else. The traits I think a good CEO has to have. Whether or not I have them is
+[11:59](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=719s) up for debate. [music] I think the best CEOs are confident enough to try things and make decisions, but at the same time humble and open-minded enough to be 
+[12:09](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=729s) being wrong. [music] , and to understand that you a lot of the decisions you make will be wrong. , you have to be sharp [music] enough. You have to be smart enough to just make decisions and see
+[12:17](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=737s) patterns and see trends. I do think that at a certain point intelligence gets in the way. You don't you don't want to be too smart, but you need to be smart enough to [music] know your way around. You need to be good at
+[12:26](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=746s) communicating and understanding people. You need to have a high EQ. A lot of the things I just mentioned just take practice. I was completely
+[12:34](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=754s) unqualified to be CEO when we started beyond I just had the gumption to go do the thing. And a good CEO my last point has to reinvent themselves. I have been head of sales,
+[12:44](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=764s) head of marketing, head of support, head of filming our ads. I I've done everything in the business and you have to do everything to know
+[12:53](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=773s) what good looks to then go hire yourself out of that job and I constantly have to reinvent what [music] I'm doing for the business at any given time. Thank you for having me.
+[13:01](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=781s) Appreciate you guys. Yeah. [applause]
+[13:10](https://www.youtube.com/watch?v=PxGSdjlSsQY&t=790s) [music] [music]
