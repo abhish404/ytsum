@@ -2,6 +2,7 @@
 Keys/groq.txt
 Keys/notion_token.json
 Keys/notion_oauth.json
+
 # Python
 __pycache__/
 .venv/

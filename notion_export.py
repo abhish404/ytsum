@@ -433,9 +433,21 @@ def export_summary(video_title: str, summary_path: str = "summary.md") -> str:
     with open(summary_path, "r", encoding="utf-8") as f:
         md = f.read()
 
-    # Pick target page
+    # Pick target page — with auto-recovery for expired tokens
     print("⏳ Fetching your Notion pages...")
-    pages = list_pages(client)
+    try:
+        pages = list_pages(client)
+    except Exception as e:
+        if "401" in str(e) or "Unauthorized" in str(e) or "invalid" in str(e).lower():
+            print("⚠️  Token expired or revoked — re-authenticating...")
+            if os.path.exists(TOKEN_PATH):
+                os.remove(TOKEN_PATH)
+            token = _run_oauth_flow()
+            client = Client(auth=token)
+            pages = list_pages(client)
+        else:
+            raise
+
     parent = select_page(pages)
 
     # Convert and push
@@ -452,5 +464,13 @@ def export_summary(video_title: str, summary_path: str = "summary.md") -> str:
 
 
 if __name__ == "__main__":
-    title = input("Video title: ").strip() or "YouTube Summary"
-    export_summary(title)
+    summary_file = sys.argv[1] if len(sys.argv) > 1 else "summary.md"
+
+    if not os.path.exists(summary_file):
+        print(f"❌ {summary_file} not found. Run the summarizer first, or pass a path:")
+        print(f"   python notion_export.py [summary_file]")
+        sys.exit(1)
+
+    title = input("Video title (or press Enter for default): ").strip() or "YouTube Summary"
+    url = export_summary(title, summary_path=summary_file)
+    print(f"\n🎉 Done! Page: {url}")
