@@ -57,7 +57,7 @@ def parse_chapters(transcript: str) -> list[dict]:
     return chapters
 
 
-def chunk_text(text: str, max_words: int = 5000) -> list[str]:
+def chunk_text(text: str, max_words: int = 2000) -> list[str]:
     """
     Split text into chunks where each chunk is at most max_words words.
     Splits on sentence boundaries where possible to avoid cutting mid-sentence.
@@ -100,7 +100,17 @@ def call_groq(client: Groq, prompt: str, model: str, retries: int = 3) -> str:
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
-            if "rate_limit" in str(e).lower() and attempt < retries - 1:
+            err_str = str(e).lower()
+            # 413 — request too large, no point retrying
+            if "413" in str(e):
+                raise
+            # 503 / overloaded — back off and retry
+            if ("503" in str(e) or "over capacity" in err_str) and attempt < retries - 1:
+                wait = 30 * (attempt + 1)
+                print(f"   ⚠️  Model overloaded — waiting {wait}s before retry ({attempt + 1}/{retries})...")
+                time.sleep(wait)
+            # Rate limit — back off and retry
+            elif "rate_limit" in err_str and attempt < retries - 1:
                 wait = 60
                 print(f"   ⚠️  Rate limit hit — waiting {wait}s before retry...")
                 time.sleep(wait)
@@ -116,7 +126,7 @@ def summarize_chapter(client: Groq, chapter_prompt: str, heading: str, body: str
     """
     words = body.split()
 
-    if len(words) <= 5000:
+    if len(words) <= 2000:
         # Normal path — chapter fits in one call
         return call_groq(
             client,
@@ -125,7 +135,7 @@ def summarize_chapter(client: Groq, chapter_prompt: str, heading: str, body: str
         )
 
     # Chapter is too large — chunk it
-    chunks = chunk_text(body, max_words=5000)
+    chunks = chunk_text(body, max_words=2000)
     print(f"   📦 Chapter too large ({len(words)} words), splitting into {len(chunks)} chunks...")
 
     chunk_summaries = []

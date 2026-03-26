@@ -32,24 +32,54 @@ def extract_video_id(url: str) -> str | None:
 
 def get_video_info(url: str) -> dict:
     """Fetch video metadata via yt-dlp."""
-    ydl_opts = {"quiet": True, "skip_download": True}
+    ydl_opts = {"quiet": True, "no_warnings": True, "skip_download": True}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
         return info
 
 
 def fetch_transcript(video_id: str) -> tuple[list, str]:
-    """Fetch transcript via youtube-transcript-api. Returns (entries, language_str)."""
+    """Fetch the most complete transcript available. Returns (entries, language_str)."""
+    MIN_ENTRIES = 50  # threshold below which we check other transcripts
+
     ytt = YouTubeTranscriptApi()
     transcript_list = ytt.list(video_id)
     available = list(transcript_list)
     if not available:
         print("❌ No transcripts available for this video.")
         sys.exit(1)
-    chosen = available[0]
-    entries = list(chosen.fetch())
-    lang_str = f"{chosen.language} ({chosen.language_code})"
-    return entries, lang_str
+
+    # Show all available transcripts for diagnostics
+    print(f"   📋 Available transcripts ({len(available)}):")
+    for t in available:
+        kind = "manual" if not t.is_generated else "auto-generated"
+        print(f"      - {t.language} ({t.language_code}) [{kind}]")
+
+    # Try the first transcript
+    best = available[0]
+    best_entries = list(best.fetch())
+
+    # If it looks incomplete and there are alternatives, find the best one
+    if len(best_entries) < MIN_ENTRIES and len(available) > 1:
+        print(f"   ⚠️  First transcript has only {len(best_entries)} entries — checking others...")
+        for alt in available[1:]:
+            try:
+                alt_entries = list(alt.fetch())
+                kind = "manual" if not alt.is_generated else "auto-generated"
+                print(f"      ↳ {alt.language} ({alt.language_code}) [{kind}]: {len(alt_entries)} entries")
+                if len(alt_entries) > len(best_entries):
+                    best = alt
+                    best_entries = alt_entries
+            except Exception:
+                continue
+
+    lang_str = f"{best.language} ({best.language_code})"
+    print(f"   ✅ Selected: {lang_str} ({len(best_entries)} entries)")
+
+    if len(best_entries) < 10:
+        print(f"   ⚠️  WARNING: Only {len(best_entries)} entries — transcript may be incomplete!")
+
+    return best_entries, lang_str
 
 
 def format_timestamp(seconds: float) -> str:
