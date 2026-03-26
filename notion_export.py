@@ -58,11 +58,14 @@ def _save_token(token_data: dict) -> None:
 def _load_saved_token() -> str | None:
     """Load previously saved access token, if it exists."""
     if os.path.exists(TOKEN_PATH):
-        with open(TOKEN_PATH, "r") as f:
-            data = json.load(f)
-        token = data.get("access_token")
-        if token:
-            return token
+        try:
+            with open(TOKEN_PATH, "r") as f:
+                data = json.load(f)
+            token = data.get("access_token")
+            if token:
+                return token
+        except (json.JSONDecodeError, ValueError):
+            print("⚠️  Saved token file is corrupted — will re-authenticate.")
     return None
 
 

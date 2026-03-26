@@ -20,6 +20,8 @@ Headings:
 - descriptive
 - include the clickable timestamp link from the first transcript line in that section
 - preserve the full markdown link syntax, e.g. [0:00](https://www.youtube.com/watch?v=...)
+- NEVER repeat the same heading or timestamp
+- each section must be unique
 
 Points:
 - numbered lists only
