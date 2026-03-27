@@ -3,3 +3,6 @@ youtube-transcript-api
 groq
 notion-client
 httpx
+fastapi
+uvicorn[standard]
+sse-starlette

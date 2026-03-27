@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Summarizer</title>
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="6" fill="url(#grad)"/>
+        <polygon points="10,7 17,12 10,17" fill="white"/>
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="24" y2="24">
+            <stop offset="0%" stop-color="#FF6B6B"/>
+            <stop offset="100%" stop-color="#C850C0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span>YT Summarizer</span>
+    </div>
+    <div class="status-dot" id="serverStatus" title="Backend status"></div>
+  </div>
+
+  <!-- Video Info Card -->
+  <div class="video-card" id="videoCard">
+    <div class="video-card-placeholder" id="placeholder">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="4" width="20" height="16" rx="3"/>
+        <polygon points="10,8 16,12 10,16"/>
+      </svg>
+      <p>Navigate to a YouTube video to get started</p>
+    </div>
+    <div class="video-info" id="videoInfo" style="display:none">
+      <img id="videoThumb" class="video-thumb" src="" alt="Thumbnail">
+      <div class="video-meta">
+        <h2 id="videoTitle" class="video-title">Loading...</h2>
+        <p id="videoChannel" class="video-channel"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  <button class="summarize-btn" id="summarizeBtn" disabled>
+    <span class="btn-text">Summarize</span>
+    <span class="btn-loader" style="display:none"></span>
+  </button>
+
+  <!-- Progress Section -->
+  <div class="progress-section" id="progressSection" style="display:none">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-log" id="progressLog"></div>
+  </div>
+
+  <!-- Result Section -->
+  <div class="result-section" id="resultSection" style="display:none">
+    <div class="result-header">
+      <h3>Summary</h3>
+      <button class="copy-btn" id="copyBtn" title="Copy to clipboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2"/>
+          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+        </svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <div class="result-content" id="resultContent"></div>
+    <div class="result-stats" id="resultStats"></div>
+  </div>
+
+  <!-- Settings (collapsible) -->
+  <details class="settings-section">
+    <summary class="settings-toggle">⚙️ Settings</summary>
+    <div class="settings-body">
+      <label>
+        <span>Backend URL</span>
+        <input type="text" id="backendUrl" value="http://localhost:8000" spellcheck="false">
+      </label>
+    </div>
+  </details>
+
+  <script src="popup.js"></script>
+</body>
+</html>

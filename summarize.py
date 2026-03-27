@@ -14,6 +14,7 @@ Requirements:
 """
 
 import sys
+import os
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -25,22 +26,22 @@ def load_prompt(filename: str) -> str:
         with open(filename, "r", encoding="utf-8") as f:
             return f.read().strip()
     except FileNotFoundError:
-        print(f"❌ {filename} not found — create it and add your prompt inside.")
-        sys.exit(1)
+        raise FileNotFoundError(f"{filename} not found — create it and add your prompt inside.")
 
 
 def load_api_key() -> str:
+    # Env var takes priority (for server/cloud deployment)
+    api_key = os.environ.get("GROQ_API_KEY", "").strip()
+    if api_key:
+        return api_key
     try:
         with open("Keys/groq.txt", "r") as f:
             api_key = f.read().strip()
     except FileNotFoundError:
-        print("❌ groq.txt not found — create it and paste your API key inside.")
-        print("   Get your free key at: https://console.groq.com")
-        sys.exit(1)
+        raise FileNotFoundError("groq.txt not found and GROQ_API_KEY env var not set.")
 
     if not api_key:
-        print("❌ groq.txt is empty — paste your API key inside it.")
-        sys.exit(1)
+        raise ValueError("groq.txt is empty and GROQ_API_KEY env var not set.")
 
     return api_key
 
@@ -173,9 +174,8 @@ def _heading_match(a: str, b: str) -> bool:
 
 
 def summarize(transcript_path: str) -> None:
-    if not __import__("os").path.exists(transcript_path):
-        print(f"❌ File not found: {transcript_path}")
-        sys.exit(1)
+    if not os.path.exists(transcript_path):
+        raise FileNotFoundError(f"File not found: {transcript_path}")
 
     api_key = load_api_key()
 
@@ -297,6 +297,114 @@ def summarize(transcript_path: str) -> None:
     print(f"✅ Summary saved to summary.md")
     print("\n--- Preview ---")
     print(output[:600])
+
+def summarize_text(transcript: str, progress_callback=None) -> str:
+    """Summarize transcript text and return the markdown summary.
+
+    Args:
+        transcript: The transcript text to summarize.
+        progress_callback: Optional callable(message: str) for progress updates.
+    """
+    def _progress(msg: str):
+        print(msg)
+        if progress_callback:
+            progress_callback(msg)
+
+    api_key = load_api_key()
+    client = Groq(api_key=api_key)
+    chapter_prompt = load_prompt("Prompts/ch_prompt.txt")
+    tldr_prompt = load_prompt("Prompts/tldr_prompt.txt")
+
+    chapters = parse_chapters(transcript)
+
+    if chapters:
+        total = len(chapters)
+
+        BATCH_WORDS = 1500
+        batches = []
+        current_batch = []
+        current_words = 0
+
+        for ch in chapters:
+            ch_words = len(ch["body"].split())
+            if current_batch and current_words + ch_words > BATCH_WORDS:
+                batches.append(current_batch)
+                current_batch = []
+                current_words = 0
+            current_batch.append(ch)
+            current_words += ch_words
+        if current_batch:
+            batches.append(current_batch)
+
+        batch_count = len(batches)
+        _progress(f"📄 Found {total} chapters → batched into {batch_count} API calls")
+
+        batch_results = [None] * batch_count
+
+        def _summarize_batch(idx, batch):
+            combined_heading = " + ".join([ch["heading"].replace("### ", "") for ch in batch])
+            combined_body = "\n\n".join([f"{ch['heading']}\n{ch['body']}" for ch in batch])
+            label = f"[{idx + 1}/{batch_count}]"
+            if len(batch) == 1:
+                _progress(f"⏳ {label} {batch[0]['heading']}")
+            else:
+                _progress(f"⏳ {label} {len(batch)} chapters: {combined_heading[:80]}...")
+            summary = summarize_chapter(client, chapter_prompt, "", combined_body)
+            return idx, summary
+
+        with ThreadPoolExecutor(max_workers=min(3, batch_count)) as pool:
+            futures = [pool.submit(_summarize_batch, i, b) for i, b in enumerate(batches)]
+            for future in as_completed(futures):
+                idx, summary = future.result()
+                batch_results[idx] = summary
+                _progress(f"✅ [{idx + 1}/{batch_count}] done")
+
+        chapter_summaries = []
+        for batch, batch_summary in zip(batches, batch_results):
+            if len(batch) == 1:
+                chapter_summaries.append((batch[0]["heading"], batch_summary))
+            else:
+                parts = re.split(r'(### .+)', batch_summary)
+                per_chapter = {}
+                for j in range(1, len(parts), 2):
+                    heading_text = parts[j].strip()
+                    body_text = parts[j + 1].strip() if j + 1 < len(parts) else ""
+                    per_chapter[heading_text] = body_text
+
+                for ch in batch:
+                    matched = False
+                    for resp_heading, resp_body in per_chapter.items():
+                        if _heading_match(ch["heading"], resp_heading):
+                            chapter_summaries.append((ch["heading"], resp_body))
+                            matched = True
+                            break
+                    if not matched:
+                        chapter_summaries.append((ch["heading"], ""))
+
+        _progress("⏳ Generating overall TL;DR...")
+        combined = "\n\n".join([f"{h}\n{s}" for h, s in chapter_summaries])
+        tldr = call_groq(client, tldr_prompt + "\n\n" + combined, model="llama-3.1-8b-instant")
+
+        lines = ["## TL;DR", tldr, "", "## Chapter Summaries", ""]
+        for heading, summary in chapter_summaries:
+            lines.append(heading)
+            summary_lines = summary.split("\n")
+            if summary_lines and summary_lines[0].startswith("###"):
+                if _heading_match(summary_lines[0], heading):
+                    summary = "\n".join(summary_lines[1:]).strip()
+            lines.append(summary)
+            lines.append("")
+
+    else:
+        _progress("⚠️  No chapters found — summarizing full transcript as one block")
+        summary = summarize_chapter(client, chapter_prompt, "### Full Transcript", transcript)
+
+        _progress("⏳ Generating TL;DR...")
+        tldr = call_groq(client, tldr_prompt + "\n\n" + summary, model="llama-3.1-8b-instant")
+
+        lines = ["## TL;DR", tldr, "", "## Summary", "", summary, ""]
+
+    return "\n".join(lines)
 
 
 if __name__ == "__main__":

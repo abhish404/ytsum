@@ -30,9 +30,16 @@ def extract_video_id(url: str) -> str | None:
     return None
 
 
-def get_video_info(url: str) -> dict:
+def get_video_info(url: str, cookiefile: str | None = None) -> dict:
     """Fetch video metadata via yt-dlp."""
-    ydl_opts = {"quiet": True, "no_warnings": True, "skip_download": True}
+    ydl_opts = {
+        "quiet": True,
+        "no_warnings": True,
+        "skip_download": True,
+        "ignore_no_formats_error": True,
+    }
+    if cookiefile:
+        ydl_opts["cookiefile"] = cookiefile
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
         return info
@@ -46,8 +53,7 @@ def fetch_transcript(video_id: str) -> tuple[list, str]:
     transcript_list = ytt.list(video_id)
     available = list(transcript_list)
     if not available:
-        print("❌ No transcripts available for this video.")
-        sys.exit(1)
+        raise RuntimeError("No transcripts available for this video.")
 
     # Show all available transcripts for diagnostics
     print(f"   📋 Available transcripts ({len(available)}):")
@@ -96,18 +102,17 @@ def clean_text(text: str) -> str:
     return " ".join(text.replace(">>", "").split())
 
 
-def build_markdown(url: str) -> tuple[str, dict]:
+def build_markdown(url: str, cookiefile: str | None = None) -> tuple[str, dict]:
     video_id = extract_video_id(url)
     if not video_id:
-        print("❌ Could not extract video ID from URL.")
-        sys.exit(1)
+        raise ValueError("Could not extract video ID from URL.")
 
     print(f"📹 Video ID: {video_id}")
     print("⏳ Fetching video info + transcript in parallel...")
 
     # Run yt-dlp metadata and transcript API calls in parallel
     with ThreadPoolExecutor(max_workers=2) as pool:
-        info_future = pool.submit(get_video_info, url)
+        info_future = pool.submit(get_video_info, url, cookiefile)
         transcript_future = pool.submit(fetch_transcript, video_id)
 
         info = info_future.result()

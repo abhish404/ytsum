@@ -14,6 +14,4 @@ summary.md
 timings.json
 
 # Editor
-.vscode
-a
-allfiles.txt
+.vscode/
