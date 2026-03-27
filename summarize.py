@@ -159,6 +159,19 @@ def summarize_chapter(client: Groq, chapter_prompt: str, heading: str, body: str
     return call_groq(client, merge_prompt, model="moonshotai/kimi-k2-instruct")
 
 
+def _normalize_heading(s: str) -> str:
+    """Strip markdown heading syntax, numbering, and timestamps for comparison."""
+    s = re.sub(r'^#+\s*', '', s)           # strip ### prefix
+    s = re.sub(r'^\d+:\s*', '', s)         # strip "1: " numbering
+    s = re.sub(r'\[.*?\]\(.*?\)', '', s)   # strip [text](url) links
+    return s.strip().lower()
+
+
+def _heading_match(a: str, b: str) -> bool:
+    """Check if two headings are essentially the same after normalization."""
+    return _normalize_heading(a) == _normalize_heading(b)
+
+
 def summarize(transcript_path: str) -> None:
     if not __import__("os").path.exists(transcript_path):
         print(f"❌ File not found: {transcript_path}")
@@ -178,22 +191,75 @@ def summarize(transcript_path: str) -> None:
     if chapters:
         # --- Path A: video has chapters ---
         total = len(chapters)
-        print(f"📄 Found {total} chapters to summarize (parallel)")
 
-        # Summarize all chapters in parallel
-        chapter_summaries = [None] * total
+        # Batch adjacent small chapters to reduce API calls
+        BATCH_WORDS = 1500  # max words per batch (leaves room for prompt)
+        batches = []  # each batch: list of chapter dicts
+        current_batch = []
+        current_words = 0
 
-        def _summarize(idx, chapter):
-            print(f"⏳ [{idx + 1}/{total}] {chapter['heading']}")
-            summary = summarize_chapter(client, chapter_prompt, chapter["heading"], chapter["body"])
-            return idx, chapter["heading"], summary
+        for ch in chapters:
+            ch_words = len(ch["body"].split())
+            # If adding this chapter exceeds limit and batch isn't empty, seal batch
+            if current_batch and current_words + ch_words > BATCH_WORDS:
+                batches.append(current_batch)
+                current_batch = []
+                current_words = 0
+            current_batch.append(ch)
+            current_words += ch_words
+        if current_batch:
+            batches.append(current_batch)
 
-        with ThreadPoolExecutor(max_workers=total) as pool:
-            futures = [pool.submit(_summarize, i, ch) for i, ch in enumerate(chapters)]
+        batch_count = len(batches)
+        print(f"📄 Found {total} chapters → batched into {batch_count} API calls")
+
+        # Summarize each batch in parallel
+        batch_results = [None] * batch_count
+
+        def _summarize_batch(idx, batch):
+            # Combine all chapters in the batch into one prompt
+            combined_heading = " + ".join([ch["heading"].replace("### ", "") for ch in batch])
+            combined_body = "\n\n".join([f"{ch['heading']}\n{ch['body']}" for ch in batch])
+            label = f"[{idx + 1}/{batch_count}]"
+            if len(batch) == 1:
+                print(f"⏳ {label} {batch[0]['heading']}")
+            else:
+                print(f"⏳ {label} {len(batch)} chapters: {combined_heading[:80]}...")
+            summary = summarize_chapter(client, chapter_prompt, "", combined_body)
+            return idx, summary
+
+        with ThreadPoolExecutor(max_workers=min(3, batch_count)) as pool:
+            futures = [pool.submit(_summarize_batch, i, b) for i, b in enumerate(batches)]
             for future in as_completed(futures):
-                idx, heading, summary = future.result()
-                chapter_summaries[idx] = (heading, summary)
-                print(f"✅ [{idx + 1}/{total}] done")
+                idx, summary = future.result()
+                batch_results[idx] = summary
+                print(f"✅ [{idx + 1}/{batch_count}] done")
+
+        # Split batch results back into per-chapter summaries
+        chapter_summaries = []
+        for batch, batch_summary in zip(batches, batch_results):
+            if len(batch) == 1:
+                chapter_summaries.append((batch[0]["heading"], batch_summary))
+            else:
+                # Split the batch summary by ### headings
+                parts = re.split(r'(### .+)', batch_summary)
+                per_chapter = {}
+                for j in range(1, len(parts), 2):
+                    heading_text = parts[j].strip()
+                    body_text = parts[j + 1].strip() if j + 1 < len(parts) else ""
+                    per_chapter[heading_text] = body_text
+
+                for ch in batch:
+                    # Try to find matching summary by normalized heading
+                    matched = False
+                    for resp_heading, resp_body in per_chapter.items():
+                        if _heading_match(ch["heading"], resp_heading):
+                            chapter_summaries.append((ch["heading"], resp_body))
+                            matched = True
+                            break
+                    if not matched:
+                        # Fallback: use the entire batch summary for this chapter
+                        chapter_summaries.append((ch["heading"], ""))
 
         # TL;DR from chapter summaries
         print("⏳ Generating overall TL;DR...")
@@ -204,6 +270,11 @@ def summarize(transcript_path: str) -> None:
         lines = ["## TL;DR", tldr, "", "## Chapter Summaries", ""]
         for heading, summary in chapter_summaries:
             lines.append(heading)
+            # Strip only the first ### line if it duplicates the chapter heading
+            summary_lines = summary.split("\n")
+            if summary_lines and summary_lines[0].startswith("###"):
+                if _heading_match(summary_lines[0], heading):
+                    summary = "\n".join(summary_lines[1:]).strip()
             lines.append(summary)
             lines.append("")
 
