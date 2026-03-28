@@ -19,6 +19,9 @@ let state = {
   error: null,
 };
 
+// AbortController for cancelling in-progress fetch
+let abortController = null;
+
 // ── State persistence ───────────────────────────────
 async function saveState() {
   await chrome.storage.local.set({ summarizerState: state });
@@ -119,6 +122,9 @@ async function runSummarization(url, title, videoId) {
   notifyPopup();
   startKeepalive();
 
+  // Create an AbortController so we can cancel mid-stream
+  abortController = new AbortController();
+
   try {
     const cookies = await getYouTubeCookies();
     state.progress.push(`🍪 Got ${cookies.length} cookies`);
@@ -134,6 +140,7 @@ async function runSummarization(url, title, videoId) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url, cookies }),
+      signal: abortController.signal,
     });
 
     if (!response.ok) {
@@ -185,12 +192,18 @@ async function runSummarization(url, title, videoId) {
     notifyPopup();
 
   } catch (err) {
+    // Don't overwrite state if we intentionally cancelled
+    if (err.name === "AbortError") {
+      // State was already reset by the cancel handler
+      return;
+    }
     state.status = "error";
     state.error = err.message || "Something went wrong";
     state.progress.push(`❌ ${state.error}`);
     await saveState();
     notifyPopup();
   } finally {
+    abortController = null;
     stopKeepalive();
   }
 }
@@ -237,7 +250,36 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return;
   }
 
+  if (msg.type === "cancel") {
+    // Abort any in-progress fetch
+    if (abortController) {
+      abortController.abort();
+      abortController = null;
+    }
+    stopKeepalive();
+    state = {
+      status: "idle",
+      videoUrl: null,
+      videoTitle: null,
+      videoId: null,
+      progress: [],
+      summary: null,
+      stats: null,
+      metadata: null,
+      error: null,
+    };
+    saveState();
+    notifyPopup();
+    sendResponse({ ok: true });
+    return;
+  }
+
   if (msg.type === "reset") {
+    if (abortController) {
+      abortController.abort();
+      abortController = null;
+    }
+    stopKeepalive();
     state = {
       status: "idle",
       videoUrl: null,

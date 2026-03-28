@@ -131,9 +131,16 @@ body::-webkit-scrollbar-thumb {
   color: var(--text-secondary);
 }
 
+/* ── Action Buttons Container ────────────────────── */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
 /* ── Summarize Button ─────────────────────────────── */
 .summarize-btn {
-  width: 100%;
+  flex: 1;
   padding: 12px;
   border: none;
   border-radius: var(--radius-md);
@@ -148,7 +155,6 @@ body::-webkit-scrollbar-thumb {
   justify-content: center;
   gap: 8px;
   transition: opacity 0.2s, transform 0.15s;
-  margin-bottom: 14px;
   position: relative;
   overflow: hidden;
 }
@@ -173,6 +179,79 @@ body::-webkit-scrollbar-thumb {
 .summarize-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+/* ── Stop Button ─────────────────────────────────── */
+.stop-btn {
+  width: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-md);
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--error);
+  cursor: pointer;
+  transition: all 0.2s;
+  animation: fadeSlideIn 0.2s ease;
+}
+
+.stop-btn:hover {
+  background: rgba(248, 113, 113, 0.28);
+  transform: scale(1.04);
+}
+
+.stop-btn:active {
+  transform: scale(0.96);
+}
+
+/* ── New Video Banner ────────────────────────────── */
+.new-video-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #FBBF24;
+}
+
+.banner-content svg {
+  flex-shrink: 0;
+  stroke: #FBBF24;
+}
+
+.banner-btn {
+  flex-shrink: 0;
+  background: rgba(251, 191, 36, 0.18);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  color: #FBBF24;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.banner-btn:hover {
+  background: rgba(251, 191, 36, 0.3);
+  color: #FCD34D;
 }
 
 .btn-loader {

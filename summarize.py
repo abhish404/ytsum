@@ -258,8 +258,12 @@ def summarize(transcript_path: str) -> None:
                             matched = True
                             break
                     if not matched:
-                        # Fallback: use the entire batch summary for this chapter
-                        chapter_summaries.append((ch["heading"], ""))
+                        # Fallback: use entire batch summary under first unmatched chapter,
+                        # empty for subsequent ones (avoids duplicating the whole block)
+                        if batch.index(ch) == 0:
+                            chapter_summaries.append((ch["heading"], batch_summary))
+                        else:
+                            chapter_summaries.append((ch["heading"], ""))
 
         # TL;DR from chapter summaries
         print("⏳ Generating overall TL;DR...")
@@ -379,7 +383,10 @@ def summarize_text(transcript: str, progress_callback=None) -> str:
                             matched = True
                             break
                     if not matched:
-                        chapter_summaries.append((ch["heading"], ""))
+                        if batch.index(ch) == 0:
+                            chapter_summaries.append((ch["heading"], batch_summary))
+                        else:
+                            chapter_summaries.append((ch["heading"], ""))
 
         _progress("⏳ Generating overall TL;DR...")
         combined = "\n\n".join([f"{h}\n{s}" for h, s in chapter_summaries])

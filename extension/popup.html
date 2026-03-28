@@ -44,11 +44,30 @@
     </div>
   </div>
 
-  <!-- Action Button -->
-  <button class="summarize-btn" id="summarizeBtn" disabled>
-    <span class="btn-text">Summarize</span>
-    <span class="btn-loader" style="display:none"></span>
-  </button>
+  <!-- Action Buttons -->
+  <div class="action-buttons" id="actionButtons">
+    <button class="summarize-btn" id="summarizeBtn" disabled>
+      <span class="btn-text">Summarize</span>
+      <span class="btn-loader" style="display:none"></span>
+    </button>
+    <button class="stop-btn" id="stopBtn" style="display:none" title="Stop and switch video">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="4" y="4" width="16" height="16" rx="2"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- New Video Detected Banner -->
+  <div class="new-video-banner" id="newVideoBanner" style="display:none">
+    <div class="banner-content">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M1 4v6h6"/>
+        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+      </svg>
+      <span>New video detected</span>
+    </div>
+    <button class="banner-btn" id="loadNewVideoBtn">Summarize This Video</button>
+  </div>
 
   <!-- Progress Section -->
   <div class="progress-section" id="progressSection" style="display:none">

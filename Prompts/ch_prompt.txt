@@ -13,7 +13,10 @@ FORMAT RULES:
 
 INSTRUCTIONS:
 
-Break the transcript into 3–6 sections based on topic shifts.
+**STEP 1 — Detect headings:**
+- Scan the transcript for existing ### headings.
+- If ### headings ARE present: keep them EXACTLY as given — same text, same numbering, same timestamp link. Do NOT rename, merge, or reorder them. Summarize content under each heading separately.
+- If ### headings are NOT present: you MUST still create 3–6 headings yourself. This is mandatory — do not output a flat list with no headings. Identify 3–6 natural topic shifts in the transcript and assign a heading to each. Use the timestamp from the first line of that topic block as the heading's timestamp link.
 
 Headings:
 - short
@@ -28,10 +31,14 @@ Points:
 - no bullet points
 - shorthand style
 - remove filler words
+- all points under one heading form ONE continuous numbered list — never restart numbering from 1 mid-section
+- do NOT bold entire points or use ** just for styling — only bold a specific term or finding if it genuinely needs emphasis, max 1–2 per section
 
 Subpoints:
 - only when the speaker elaborates
-- Format subpoints so they start with a tab (\t) indentation, not four space characters.
+- indent with a single tab character (\t), not spaces
+- subpoints are also numbered (i. ii. iii. iv. v. vi. vii. viii. ix. x. ...)
+- never use bold inside subpoints
 
 Callouts:
 - max 1–2 total
@@ -42,5 +49,7 @@ Do NOT:
 - add commentary
 - add introduction text
 - strip or modify timestamp links
+- restart a numbered list mid-section
+- bold entire list items or use ** purely for decoration
 
 Output ONLY markdown.
