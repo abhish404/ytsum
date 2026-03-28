@@ -271,30 +271,122 @@ function onLoadNewVideo() {
 
 // ── Markdown → HTML rendering ───────────────────────
 function renderMarkdown(md) {
-  let html = md
-    .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-    .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+  const lines = md.split(/\r?\n/);
+  const output = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Headings
+    if (/^### .+/.test(line)) {
+      output.push(`<h3>${formatInline(line.slice(4))}</h3>`);
+      i++;
+      continue;
+    }
+    if (/^## .+/.test(line)) {
+      output.push(`<h2>${formatInline(line.slice(3))}</h2>`);
+      i++;
+      continue;
+    }
+
+    // Blockquote
+    if (/^> .+/.test(line)) {
+      const quoteLines = [];
+      while (i < lines.length && /^> .+/.test(lines[i])) {
+        quoteLines.push(formatInline(lines[i].slice(2)));
+        i++;
+      }
+      output.push(`<blockquote>${quoteLines.join("<br>")}</blockquote>`);
+      continue;
+    }
+
+    // Ordered list block (handles nested indentation)
+    if (/^\d+\.\s/.test(line)) {
+      output.push(parseOrderedList(lines, i));
+      // Skip past the list block
+      while (i < lines.length && (/^\s*\d+\.\s/.test(lines[i]) || lines[i].trim() === "")) {
+        if (lines[i].trim() === "") { i++; break; }
+        i++;
+      }
+      continue;
+    }
+
+    // Empty line
+    if (line.trim() === "") {
+      i++;
+      continue;
+    }
+
+    // Paragraph (anything else)
+    output.push(`<p>${formatInline(line)}</p>`);
+    i++;
+  }
+
+  return output.join("\n");
+}
+
+// Format inline markdown: bold, code, links
+function formatInline(text) {
+  return text
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/`([^`]+)`/g, "<code>$1</code>")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-    .replace(/^> (.+)$/gm, "<blockquote>$1</blockquote>")
-    .replace(/((?:^\d+\..+\n?)+)/gm, (match) => {
-      const items = match.trim().split("\n").map((l) => {
-        const text = l.replace(/^\d+\.\s*/, "");
-        return `<li>${text}</li>`;
-      });
-      return `<ol>${items.join("")}</ol>`;
-    })
-    .replace(/^(?!<[hob\d/lu])((?!<).+)$/gm, "<p>$1</p>")
-    .replace(/<\/blockquote>\s*<blockquote>/g, "<br>");
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+}
 
-  return html;
+// Parse a block of ordered-list lines into nested <ol> HTML
+function parseOrderedList(lines, start) {
+  const items = [];
+  let i = start;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    if (line.trim() === "") break; // empty line ends the list block
+
+    const match = line.match(/^(\s*)\d+\.\s+(.*)/);
+    if (!match) break; // not a list item
+
+    const indent = match[1].length;
+    const text = formatInline(match[2]);
+    items.push({ indent, text });
+    i++;
+  }
+
+  // Build nested <ol> from flat indent levels
+  return buildNestedOl(items, 0, 0).html;
+}
+
+function buildNestedOl(items, index, parentIndent) {
+  let html = "<ol>";
+  while (index < items.length) {
+    const item = items[index];
+    if (item.indent < parentIndent) break; // back to parent level
+
+    if (item.indent === parentIndent) {
+      html += `<li>${item.text}`;
+      // Check if next item is a sub-list
+      if (index + 1 < items.length && items[index + 1].indent > parentIndent) {
+        const sub = buildNestedOl(items, index + 1, items[index + 1].indent);
+        html += sub.html;
+        index = sub.nextIndex;
+      } else {
+        index++;
+      }
+      html += "</li>";
+    } else {
+      // Deeper indent than expected — treat as sub-list of previous item
+      break;
+    }
+  }
+  html += "</ol>";
+  return { html, nextIndex: index };
 }
 
 
 function renderResult(summaryMd, stats) {
   elements.resultSection.style.display = "block";
   elements.resultContent.innerHTML = renderMarkdown(summaryMd);
+  wireTimestampLinks();
 
   if (stats) {
     elements.resultStats.innerHTML = `
@@ -303,6 +395,36 @@ function renderResult(summaryMd, stats) {
       <span>📄 ${stats.summary_words?.toLocaleString() || "?"} summary words</span>
     `;
   }
+}
+
+
+// ── Timestamp link interception ─────────────────────
+// Intercept clicks on YouTube timestamp links so they seek
+// the video on the active tab instead of opening a new tab.
+function wireTimestampLinks() {
+  const links = elements.resultContent.querySelectorAll('a[href*="youtube.com/watch"]');
+  links.forEach((a) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      try {
+        const href = new URL(a.href);
+        const tParam = href.searchParams.get("t");
+        if (tParam == null) return;
+        // Parse "92s" → 92, or plain number
+        const seconds = parseInt(tParam.replace(/s$/i, ""), 10);
+        if (isNaN(seconds)) return;
+
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          const tab = tabs?.[0];
+          if (!tab?.id) return;
+          chrome.tabs.sendMessage(tab.id, { type: "SEEK_VIDEO", seconds }, () => {
+            // Suppress any lastError if content script isn't ready
+            void chrome.runtime.lastError;
+          });
+        });
+      } catch {}
+    });
+  });
 }
 
 

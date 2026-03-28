@@ -433,8 +433,16 @@ body::-webkit-scrollbar-thumb {
 }
 
 .result-content ol, .result-content ul {
-  padding-left: 18px;
+  padding-left: 20px;
   margin-bottom: 6px;
+  list-style-type: decimal;
+}
+
+.result-content ol ol {
+  padding-left: 18px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  list-style-type: lower-alpha;
 }
 
 .result-content li {
