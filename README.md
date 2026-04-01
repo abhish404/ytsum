@@ -8,7 +8,7 @@ Summarize any YouTube video from the terminal or directly from your browser via 
 
 - **Python 3.10+** must be installed
 - A free **Groq API key** — get one at [console.groq.com](https://console.groq.com)
-- *(Optional)* A Notion **Public Integration** if you want to export summaries — set one up at [notion.so/my-integrations](https://www.notion.so/my-integrations)
+- *(Optional)* A Notion **Public Integration** to export summaries — set one up at [notion.so/my-integrations](https://www.notion.so/my-integrations)
 
 ---
 
@@ -41,16 +41,24 @@ python main.py
 
 Output lands in `summary.md`. At the end you'll be asked if you want to push it to Notion.
 
-### 2. Chrome Extension (local server)
+### 2. Chrome Extension
 
-Start the backend:
+**Start the backend first:**
 
 ```bash
 python server.py
 # or: uvicorn server:app --host 0.0.0.0 --port 8000
 ```
 
-The server runs at `http://localhost:8000`. The Chrome extension talks to it directly — click the extension on any YouTube video page and it handles the rest. Summaries are saved automatically to a `summaries/` folder as timestamped `.md` files.
+**Load the extension in Chrome:**
+
+1. Go to `chrome://extensions`
+2. Enable **Developer mode**
+3. Click **Load unpacked** and select the `extension/` folder
+
+Once loaded, navigate to any YouTube video. A sidebar appears below the video with a **Summarize** button. The extension popup (toolbar icon) works the same way and lets you change the backend URL under Settings.
+
+Summaries are saved automatically to a `summaries/` folder as timestamped `.md` files.
 
 ---
 
@@ -85,48 +93,61 @@ summary.md  +  (optional) Notion page
 - Chapter summaries → `moonshotai/kimi-k2-instruct`
 - TL;DR → `llama-3.1-8b-instant`
 
-Both are on Groq's free tier.
+Both are on Groq's free tier. Every run appends an entry to `timings.json` — video title, word count, fillers removed, and per-step timing.
 
-Every run appends an entry to `timings.json` — video title, word count, fillers removed, per-step timing.
+### Extension pipeline
 
-### Extension pipeline (server.py)
+The extension runs a two-phase pipeline so you see progress as it happens rather than waiting for everything at once.
 
-The server exposes three endpoints:
+**Phase 1 — Prepare** (runs automatically when you open the popup or sidebar on a YouTube video):
+- The background service worker extracts your YouTube cookies from the browser
+- Sends them along with the video URL to `POST /prepare` on the local server
+- The server fetches the transcript via yt-dlp + youtube-transcript-api and strips filler words
+- Returns the cleaned transcript as JSON
+
+**Phase 2 — Summarize** (starts when you click the button):
+- Sends the cleaned transcript to `POST /summarize`
+- The server streams progress back over SSE — you see each step appear in real time
+- The final summary renders as formatted Markdown in the sidebar/popup
+
+The background service worker persists state across popup open/close via `chrome.storage.local`, so closing and reopening the popup doesn't lose your summary or restart the pipeline. If the service worker restarts mid-operation, it detects this on next load and surfaces an error rather than silently hanging.
+
+**Server endpoints:**
 
 | Endpoint | What it does |
 |---|---|
 | `POST /prepare` | Fetches transcript + removes fillers. Returns JSON. |
-| `POST /summarize` | Takes a cleaned transcript, streams summarization progress back via SSE, returns the final summary. |
-| `POST /summarize-full` | Legacy combined endpoint — full pipeline in one SSE stream. |
-| `GET /health` | Returns `{"status": "ok"}`. |
+| `POST /summarize` | Summarizes a cleaned transcript. Streams progress + result via SSE. |
+| `POST /summarize-full` | Combined single-call pipeline. Streams the full pipeline via SSE. |
+| `GET /health` | Health check. Returns `{"status": "ok"}`. |
 
-The extension passes your browser's YouTube cookies along with the request so yt-dlp can access age-restricted or member-only videos. The server converts them to Netscape format on the fly and discards the file after use.
+The extension passes your browser's YouTube cookies with each request so yt-dlp can access age-restricted or members-only videos. The server writes them to a temporary Netscape-format cookie file and deletes it after the request completes.
 
 ---
 
 ## Notion Setup (optional)
 
-Notion uses OAuth — you authorize once via the browser and the token is saved for all future runs.
+Notion uses OAuth — you authorize once and the token is saved for all future runs.
 
-1. Create a **Public Integration** at [notion.so/my-integrations](https://www.notion.so/my-integrations) and set the redirect URI to `http://localhost:3456/callback`
+1. Create a **Public Integration** at [notion.so/my-integrations](https://www.notion.so/my-integrations) with redirect URI set to `http://localhost:3456/callback`
 2. Save your credentials:
 
 ```bash
 echo '{"client_id": "...", "client_secret": "..."}' > Keys/notion_oauth.json
 ```
 
-On first use, a browser window opens for authorization. After you approve, `Keys/notion_token.json` is saved and future runs skip the browser step. You'll be prompted to pick which Notion page to nest the summary under.
+On first use a browser window opens for authorization. After you approve, `Keys/notion_token.json` is saved and future runs skip the browser step. You'll be prompted to pick which Notion page to nest the summary under.
 
 ---
 
 ## Prompts
 
-The AI prompts live in the `Prompts/` folder:
+The AI prompts live in `Prompts/`:
 
-- `Prompts/ch_prompt.txt` — instructions for per-chapter summarization
-- `Prompts/tldr_prompt.txt` — instructions for the overall TL;DR
+- `Prompts/ch_prompt.txt` — per-chapter summarization instructions
+- `Prompts/tldr_prompt.txt` — overall TL;DR instructions
 
-Edit these to change the output format, level of detail, or tone of the summaries.
+Edit these to change the output format, level of detail, or tone.
 
 ---
 
