@@ -1,4 +1,4 @@
-# ytsum
+# Flick - YouTube Summarizer
 
 Summarize any YouTube video from the terminal or directly from your browser via a Chrome extension. Powered by Groq — a typical 10-minute video takes under 20 seconds.
 
